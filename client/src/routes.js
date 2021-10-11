@@ -1,5 +1,5 @@
 import React from "react"
-import { ReactDOM } from "react"
+import ReactDOM from "react-dom"
 import { Switch, Route, Redirect } from "react-router"
 
 import {StartPage as StartDom} from './pages/start_dom'
@@ -42,7 +42,8 @@ export const useRoutes = isAuthenticated => {
         <Switch>
             <Route path="/" exact>
                 {/* <StartPage/> */}
-                <RegistretionPage/>
+                {/* <RegistretionPage/> */}
+                <SwissPage/>
             </Route>
 
             <Redirect to="/" />
