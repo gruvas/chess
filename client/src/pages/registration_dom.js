@@ -1,3 +1,5 @@
+import React from 'react'
+
 import eye from "../img/eye.svg"
 
 export const RegistretionDom = () => {
