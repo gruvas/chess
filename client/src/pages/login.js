@@ -6,7 +6,6 @@ export function login(){
     const password_btn = document.querySelector(".password_bloc_btn")
     const login_input_password = document.querySelector(".login_input_password_textBox")
     const password_bloc_img = document.querySelector(".password_bloc_img")
-    const registration_btn = document.querySelector(".login_btn_registration")
 
     let counter_click = 0
 
@@ -21,6 +20,7 @@ export function login(){
             password_bloc_img.src = eye
         }
     })
+
 }
 
 

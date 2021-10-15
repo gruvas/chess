@@ -10,7 +10,7 @@ export const RegistretionDom = () => {
             </button>
             <nav className="burger menu_body">
                 <ul className="menu_list" id="menu_list_black">
-                    <a className="previous_page_link">
+                    <a href="start" className="previous_page_link">
                         <li>Вернуться на <br></br>
                         страницу выбора режима</li>
                     </a>
