@@ -149,8 +149,6 @@ function Swiss(){
     const completion_registration_btn_comeBack = document.querySelector('#completion_registration_btn_comeBack')
     const completion_registration_btn_proceed = document.querySelector('#completion_registration_btn_proceed')
 
-    const link_login = document.querySelector(".link_login")
-
     // Переменные для формы заполнения участников
     const filling_participants = document.querySelector('.fillingParticipants')
 

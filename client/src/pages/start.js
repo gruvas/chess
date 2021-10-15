@@ -93,6 +93,7 @@ function changeSlide(direction){
 
 
 function Start(){
+    const link_btn_swiss = document.querySelector('.startBt_swiss')
     const upBtn = document.querySelector('.up-button')
     const downBtn = document.querySelector('.down-button')
     const sidebar = document.querySelector('.sidebar')
@@ -119,6 +120,9 @@ function Start(){
         }
     })
 
+    link_btn_swiss.addEventListener('click', function(){
+        document.location.href = '/swiss'
+    })
 
 
     sidebar.style.top = `-${(slidesCount - 1)*100}vh`

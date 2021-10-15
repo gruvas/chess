@@ -3,6 +3,13 @@ import React from 'react'
 import eye from '../img/eye.svg'
 
 export const LoginDom = () => {
+    setTimeout(function(){
+        const registration_btn = document.querySelector(".login_btn_registration")
+        registration_btn.addEventListener('click', function(){
+            document.location.href = '/registration'
+        })
+    }, 1)
+
     return(
         <div>
             <button className="burger menu_icon menu_icon_black" id="menu_icon_black">
@@ -10,7 +17,7 @@ export const LoginDom = () => {
             </button>
             <nav className="burger menu_body">
                 <ul className="menu_list" id="menu_list_black">
-                    <a className="previous_page_link">
+                    <a href="start" className="previous_page_link">
                         <li>Вернуться на <br></br>
                         страницу выбора режима</li>
                     </a>
