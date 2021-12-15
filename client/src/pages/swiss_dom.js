@@ -9,8 +9,8 @@ export const SwissDom = () => {
                 </button>
                 <nav className="burger menu_body">
                     <ul className="menu_list" id="menu_list_black">
-                        <a href="login" className="link_login">
-                            <li>Вход/Регистрация</li>
+                        <a href="personal_area" className="link_login">
+                            <li>Личный кабинет</li>
                         </a>
                         <a href="start" className="previous_page_link">
                             <li>Вернуться на <br></br>
@@ -39,8 +39,8 @@ export const SwissDom = () => {
             <nav className="burger menu_body" id="">
                 <ul className="menu_list" id="menu_list_white">
                         <p>Швейцарская система</p>
-                        <a href="login" className="link_login">
-                            <li>Вход/Регистрация</li>
+                        <a href="personal_area" className="link_login">
+                            <li>Личный кабинет</li>
                         </a>
                         <a href="start">
                             <li className="previous_page_link">Вернуться на <br></br>

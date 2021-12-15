@@ -1,9 +1,11 @@
 import React from "react"
 import ReactDOM from "react-dom"
 import { Switch, Route, Redirect } from "react-router"
+import {NavLink, useHistory} from 'react-router-dom'
 
-import {StartPage as StartDom} from './pages/start_dom'
-import {Start} from './pages/start'
+// import {StartPage as StartDom} from './pages/start_dom'
+// import {Start} from './pages/start'
+import {StartPage} from './pages/StartPage'
 
 import {Swiss} from './pages/swiss'
 import {SwissDom} from './pages/swiss_dom'
@@ -15,57 +17,85 @@ import { RegistretionDom } from "./pages/registration_dom"
 import {LoginDom} from './pages/login_dom'
 import {login} from './pages/login'
 
+import { Navbar } from "./pages/Navbar"
+
+import {PersonalArea} from './pages/personal_area_dom'
+import {CompletedTour} from './pages/completed_tour_dom'
+import {ContinueTour} from './pages/continue_tour_dom'
+
 
 
 export const useRoutes = isAuthenticated => {
-    if(isAuthenticated){
+    if(localStorage.getItem('useData') != null){
         return(
             <Switch>
-                <Route path="/start" exact>
+                <Route path="/personal_area">
+                    <PersonalArea/>
+                </Route>
+                <Route path="/completed_tour">
+                    <CompletedTour/>
+                </Route>
+                <Route path="/continue_tour">
+                    <ContinueTour/>
+                </Route>
+                <Route path="/start">
                     <StartPage/>
                 </Route>
-                <Route path="/swiss" exact>
+                <Route path="/swiss">
                     <SwissPage/>
                 </Route>
-                <Route path="/login" exact>
-                    <LoginPage/>
+                <Route path="/navbar/:id">
+                    <Navbar />
                 </Route>
-                <Route path="/registration" exact>
-                    <RegistretionPage/>
-                </Route>
-                <Redirect to="/start" />
+                <Redirect to="/personal_area" />
             </Switch>
         )
     }
 
-    return(
+    if(localStorage.getItem('useData') == null){return(
         <Switch>
-            <Route path="/" exact>
-                {/* <StartPage/> */}
+            <Route path="/registration" exact>
                 <RegistretionPage/>
-                {/* <SwissPage/> */}
             </Route>
-
-            <Redirect to="/" />
+            <Route path="/login" exact>
+                <LoginPage/>
+            </Route>
+            <Redirect to="/login" />
         </Switch>
-    )
+    )}
 }
 
 
 
+// const StartPage = () => {
+//     setTimeout(function(){
+//         Start()
 
+//         console.log(localStorage.getItem('useData').userId)
+//         const burger = document.querySelector(".menu_icon")
 
+//         function addActive_burger_black(event){
+//             event.stopPropagation()
+//             const menu_icon = document.querySelector(".menu_icon")
+//             const menu_list = document.querySelector("#menu_list_white")
 
-const StartPage = () => {
-    setTimeout(function(){Start()}, 1)
-    // Start()
+//             menu_list.classList.toggle('active')
+//             menu_list.classList.toggle('active')
+//             console.log('eq')
+//         }
+//         burger.addEventListener('click', addActive_burger_black)
+//         // burger.addEventListener('click', function(){
+//         //     console.log('da')
+//         // })
 
-    return(
-        <div>
-            <StartDom/>
-        </div>
-    )
-}
+//     }, 1)
+
+//     return(
+//         <div>
+//             <StartDom/>
+//         </div>
+//     )
+// }
 
 const SwissPage = () => {
     setTimeout(function(){
@@ -73,14 +103,14 @@ const SwissPage = () => {
         swiss_r()
 
         const basic_information_proceed = document.querySelector('.basic_information_proceed')
-    
+
         basic_information_proceed.addEventListener('click', function(){
             ReactDOM.render(generation_fillingParticipants(), document.querySelector('.fillingParticipants_user_container'))
         }
         )
-    
+
         const fillingParticipants_btn_proceed = document.querySelector('#fillingParticipants_btn_proceed')
-    
+
         fillingParticipants_btn_proceed.addEventListener('click', function(){
                 let number_team = 4
                 let number_people_team = 4
@@ -140,16 +170,8 @@ const SwissPage = () => {
 }
 
 const LoginPage = () => {
-    // ReactDOM.render(
-    //     <div>
-    //       <LoginDom />
-    //     </div>,
-    //     document.getElementById('root')
-    //   )
-  
-
     setTimeout(function(){
-        document.querySelector('.login_btn_registration').addEventListener('click', function(){
+            document.querySelector('.login_btn_registration').addEventListener('click', function(){
             localStorage.setItem('current_screen', "registretion")
             localStorage.setItem('previous_screen', "login")
         })
@@ -157,23 +179,6 @@ const LoginPage = () => {
         login()
 
         const burger = document.querySelector(".menu_icon")
-
-        burger.addEventListener('click', addActive_burger_black)
-
-        function addActive_burger_black(){
-            const menu_icon_black = document.querySelector("#menu_icon_black")
-            const menu_list_black = document.querySelector("#menu_list_black")
-
-            menu_list_black.classList.toggle('active')
-            menu_icon_black.classList.toggle('active')
-        }
-
-        const previous_page_link = document.querySelector(".previous_page_link")
-
-        previous_page_link.addEventListener('click', function(){
-            localStorage.setItem('current_screen', "start")
-            localStorage.setItem('previous_screen', "login")
-        })
     }, 1)
 
     return(
@@ -213,3 +218,28 @@ const RegistretionPage = () => {
         </div>
     )
 }
+
+// const PersonalArea_Dom = () => {
+//     setTimeout(function(){
+//         function addActive_burger_black(){
+//             const menu_icon_black = document.querySelector("#menu_icon_black")
+//             const menu_list_black = document.querySelector("#menu_list_black")
+
+//             // menu_list_black.classList.toggle('active')
+//             // menu_icon_black.classList.toggle('active')
+
+//             menu_list_black.addEventListener('click', function(){
+//                 console.log('da')
+//             })
+//             menu_icon_black.classList.addEventListener('click', function(){
+//                 console.log('da')
+//             })
+//         }
+//     }, 1)
+
+//     return(
+//         <div>
+//             <PersonalArea/>
+//         </div>
+//     )
+// }

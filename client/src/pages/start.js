@@ -86,14 +86,20 @@ function changeSlide(direction){
 }
 
 
+function click_burger(){
+    const menu_icon = document.querySelector(".menu_icon")
+    const menu_list_white = document.querySelector("#menu_list_white")
 
-
+    menu_icon.classList.toggle('active')
+    menu_list_white.classList.toggle('active')
+    console.log('burger_start')
+}
 
 
 
 
 function Start(){
-    const link_btn_swiss = document.querySelector('.startBt_swiss')
+    // const link_btn_swiss = document.querySelector('.startBt_swiss')
     const upBtn = document.querySelector('.up-button')
     const downBtn = document.querySelector('.down-button')
     const sidebar = document.querySelector('.sidebar')
@@ -103,6 +109,13 @@ function Start(){
     // const link_btn_swiss = document.querySelector('.startBt_swiss')
     const link_btn_circle = document.querySelector('.startBt_circle')
     const link_btn_exception = document.querySelector('.startBt_exception')
+
+    const menu_icon = document.querySelector(".menu_icon")
+
+    menu_icon.addEventListener('click', click_burger)
+    // menu_icon.addEventListener('click', function(){
+    //     console.log('da')
+    // })
 
     // link_btn_swiss.onclick = link_swiss
     link_btn_circle.onclick = link_swiss
@@ -120,9 +133,9 @@ function Start(){
         }
     })
 
-    link_btn_swiss.addEventListener('click', function(){
-        document.location.href = '/swiss'
-    })
+    // link_btn_swiss.addEventListener('click', function(){
+    //     document.location.href = '/swiss'
+    // })
 
 
     sidebar.style.top = `-${(slidesCount - 1)*100}vh`
