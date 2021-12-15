@@ -1,28 +1,45 @@
+import {NavLink} from 'react-router-dom'
+
 export const StartPage = () => {
     return(
-        <div className="no_scrolling ">
+        <div className="no_scrolling">
             <div className="container">
+                <button className="burger menu_icon burger_white">
+                    <span className="test"></span>
+                </button>
+                <nav className="burger menu_body">
+                    <ul className="menu_list" id="menu_list_white">
+                        <a href="personal_area" className="previous_page_link">
+                            <li>Перейти в <br></br>
+                            личный кабинет</li>
+                        </a>
+                    </ul>
+                </nav>
+
                 <div className="sidebar">
-                    {/* <div style="background:#000000;"> */}
                     <div style={{backgroundColor: "#000"}}>
                     <h1 className="startH startH_exception">Игра на выбывание</h1>
-                    <button className="startBt startBt_exception">
-                        Начать
-                    </button>
+                        <NavLink to="/exception">
+                            <button className="startBt startBt_exception">
+                                Начать
+                            </button>
+                        </NavLink>
                     </div>
-                    {/* <div style="background:#0B1922;"> */}
                     <div style={{backgroundColor: "#0B1922"}}>
                     <h1 className="startH startH_circle">Жеребьевка по<br></br> круговой системе</h1>
-                    <button className="startBt startBt_circle">
-                        Начать
-                    </button>
+                        <NavLink to="/circle">
+                            <button className="startBt startBt_circle">
+                                Начать
+                            </button>
+                        </NavLink>
                     </div>
-                    {/* <div style="background:#FFCB7B;"> */}
                     <div style={{backgroundColor: "#FFCB7B"}}>
                     <h1 className="startH startH_swiss">Жеребьевка по<br></br> швейцарской системе</h1>
-                    <button className="startBt startBt_swiss">
-                        Начать
-                    </button>
+                        <NavLink to="/swiss">
+                            <button className="startBt startBt_swiss">
+                                Начать
+                            </button>
+                        </NavLink>
                     </div>
                 </div>
                 <div className="main-slide">

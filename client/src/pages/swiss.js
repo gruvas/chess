@@ -8,6 +8,7 @@ function addActive_burger_black(){
 
     menu_list_black.classList.toggle('active')
     menu_icon_black.classList.toggle('active')
+    console.log('black')
 }
 
 function addActive_burger_white(){
@@ -16,6 +17,7 @@ function addActive_burger_white(){
 
     menu_list_white.classList.toggle('active')
     burger_white.classList.toggle('active')
+    console.log('white')
 }
 
 
@@ -85,17 +87,6 @@ function clouse_and_open_dropdown(){
     }
 }
 
-// function validate(e) {
-//     let theEvent = e || window.event;
-//     let key = theEvent.keyCode || theEvent.which;
-//     key = String.fromCharCode( key );
-//     let regex = /[0-9]/;
-//     if( !regex.test(key) ) {
-//       theEvent.returnValue = false;
-//       if(theEvent.preventDefault) theEvent.preventDefault();
-//     }
-// }
-
 function new_page(item_number_remove, item_number_add, block_hide, block_show){
     const horizontal_menu = document.querySelectorAll('.horizontal_menu p')
 
@@ -104,12 +95,6 @@ function new_page(item_number_remove, item_number_add, block_hide, block_show){
     block_hide.classList.add('hide')
     block_show.classList.remove('hide')
 }
-
-
-
-
-
-
 
 
 
@@ -213,23 +198,6 @@ function Swiss(){
 
     dropDawn_btn.addEventListener('click', clouse_and_open_dropdown)
 
-    // let dropDawn_btn_active_zone = -1
-    // console.log(dropDawn_btn_active_zone)
-    // mode_selection_btn.addEventListener('click', function(){
-    //     dropDawn_btn_active_zone++
-    // })
-    // basic_information_comeBack.addEventListener('click', function(){
-    //     dropDawn_btn_active_zone--
-    // })
-    // basic_information_proceed.addEventListener('click', function(){
-    //     dropDawn_btn_active_zone--
-    // })
-    // fillingParticipants_btn_comeBack.addEventListener('click', function(){
-    //     dropDawn_btn_active_zone++
-    // })
-
-    
-
     document.addEventListener("click", function (e) {
         if(e.target.textContent == "Часы"){
             dropDawn_title_p.textContent = "Часы"
@@ -238,35 +206,6 @@ function Swiss(){
             dropDawn_title_p.textContent = "Минуты"
             clouse_dropdown()
         }
-
-
-        // document.querySelector('.link_login').addEventListener('click', function(){
-        //     if(dropDawn_btn_active_zone == 0){
-        //         dropDawn_btn_active_zone--
-        //     }
-        // })
-        // document.querySelector('.previous_page_link').addEventListener('click', function(){
-        //     if(dropDawn_btn_active_zone == 0){
-        //         dropDawn_btn_active_zone--
-        //     }
-        // })
-        // if(dropDawn_btn_active_zone == 0 && e.target.textContent == "Вернуться на страницу выбора режима"
-        // if(e.target.textContent == "Вернуться на страницу выбора режима"
-        // && e.target.textContent == "Вход/Регистрация"){
-        //     dropDawn_btn_active_zone--
-        //     console.log(dropDawn_btn_active_zone)
-        //     console.log('ada')
-        // }
-        // let qweqw = document.querySelector('.basic_information_teamsAmount_div').classList.contains('active')
-        // console.log(qweqw)
-
-        // if(document.querySelector('.burger_white').classList.contains('active') == false
-        // && e.target.classList != 'dropDawn_btn' && dropDawn_btn_active_zone == 0
-        // && e.target.textContent != "Вернуться на страницу выбора режима"
-        // && e.target.textContent != "Вход/Регистрация"){
-        //     console.log(dropDawn_btn_active_zone)
-        //     clouse_dropdown()
-        // }
     });
 
     basic_information_comeBack.addEventListener('click', function(){

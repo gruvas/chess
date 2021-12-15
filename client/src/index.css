@@ -311,6 +311,11 @@ right: -28px;
   padding-bottom: 20px;
 }
 
+.menu_list_nickname{
+  text-align: left !important;
+  padding-left: 9px;
+}
+
 .menu_list.active{
   left: 0px;
 
@@ -630,6 +635,21 @@ right: -28px;
 
   padding: 0 45px;
   margin-bottom: 20px;
+}
+
+.warning_registreting{
+  margin-top: 20px;
+
+  display: none;
+  font-size: 24px;
+  color: rgb(2, 182, 2);
+}
+.warning_login{
+  margin-top: 9px;
+
+  display: none;
+  font-size: 24px;
+  color: red;
 }
 
 
@@ -995,6 +1015,57 @@ right: -28px;
 
 
 
+.personal_area_container{
+  max-width: 1200px;
+  padding: 0 15px;
+  margin: 0 auto;
+}
+
+
+.personal_area_title{
+  font-size: 21px;
+  font-weight: 100;
+
+  margin-top: 30px;
+
+  text-align: center;
+}
+
+.personal_area_main{
+  margin-top: 50px;
+}
+
+.personal_area_block{
+  width: 100%;
+
+  margin-top: 30px;
+
+  cursor: pointer;
+
+  display: flex;
+}
+
+.personal_area_img{
+  width: 150px;
+  height: 100px;
+
+  border-radius: 100px 0 0 100px;
+}
+
+.personal_area_block p{
+  width: 100ch;
+  /* height: 100; */
+
+  border: 1px solid black;
+  border-left: none;
+
+  display: grid;
+  text-align: center;
+  align-items: center;
+}
+
+
+
 
 
 
@@ -1234,8 +1305,6 @@ right: -28px;
   }
 }
 
-
-
 @media (max-width: 264px){
   .up-button{
     margin-top: 70px;
@@ -1244,3 +1313,63 @@ right: -28px;
     margin-top: 70px;
   }
 }
+
+
+
+@media (max-width: 356px){
+  .personal_area_img{
+      display: none;
+  }
+
+  .personal_area_block p{
+      width: 100ch;
+      height: 40px;
+
+      border-radius: 100px;
+  }
+}
+
+@media (max-width: 356px){
+  .personal_area_block p{
+      font-size: 14px;
+  }
+}
+
+@media (max-width: 196px){
+  .personal_area_block p{
+      font-size: 12px;
+  }
+}
+
+@media (max-height: 466px){
+  .personal_area_img{
+      height: 20vh;
+  }
+}
+
+@media (max-height: 434px){
+  .personal_area_img{
+      display: none;
+  }
+
+  .personal_area_block p{
+      width: 100ch;
+      height: 40px;
+
+      border-radius: 100px;
+  }
+}
+
+@media (max-height: 434px){
+  .personal_area_block{
+      margin-top: 10px;
+  }
+}
+
+@media (max-height: 434px){
+  .personal_area_main{
+      margin-top: 10px;
+  }
+}
+
+
