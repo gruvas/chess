@@ -23,6 +23,10 @@ import {PersonalArea} from './pages/personal_area_dom'
 import {CompletedTour} from './pages/completed_tour_dom'
 import {ContinueTour} from './pages/continue_tour_dom'
 
+// import { useHttp } from './hooks/http.hook'
+// import user_photo from "./img/user.png"
+// const mongoose = require('mongoose')
+
 
 
 export const useRoutes = isAuthenticated => {
@@ -97,7 +101,9 @@ export const useRoutes = isAuthenticated => {
 //     )
 // }
 
-const SwissPage = () => {
+const SwissPage =  () => {
+    // const {request} = useHttp()
+
     setTimeout(function(){
         Swiss()
         swiss_r()
@@ -110,29 +116,173 @@ const SwissPage = () => {
         )
 
         const fillingParticipants_btn_proceed = document.querySelector('#fillingParticipants_btn_proceed')
+// fillingParticipants_btn_proceed.onclick = async function(){
+//     let tournament_data
+//     let id_tournament = localStorage.getItem('tournament_id')
 
-        fillingParticipants_btn_proceed.addEventListener('click', function(){
-                let number_team = 4
-                let number_people_team = 4
-                let array_user_fields = []
-                let we = generation_complete_checkout()
-                const copyOfUser = Object.assign({}, we);
-                let element_line
-                let intermediate_variable
+//     let tournament = {id: mongoose.Types.ObjectId(id_tournament)}
+//     try {
+//         setTimeout(async function(){
+//             tournament_data = await request('/api/auth/memberData', 'POST', {...tournament})
 
-                ReactDOM.render(array_team_ret(), document.querySelector('.completion_registration_participants'))
+//             console.log(tournament_data.tournament_data)
+//             console.log(tournament_data.tournament_data.length)
+//             console.log(tournament_data.tournament_data[0])
+//         }, 1)
+//     } catch (e) {}
 
-                for(let ii = 0; ii < number_team; ii++){
-                for(let i = 0; i < number_people_team; i++){
-                    array_user_fields.push(we[i])
-                }
-                element_line = "element_line_" + ii
-                intermediate_variable = '#' + element_line
+//     setTimeout(function(){
+//         document.querySelector('.mode_selection').classList.toggle('hide')
+//         window.scrollTo({top: 0});
+//     }, 1)
 
-                ReactDOM.render(array_user_fields, document.querySelector(`${intermediate_variable}`))
-                array_user_fields = []
-                }
-                take_data_fields()
+
+
+
+//     let game_type = localStorage.getItem('gameType') || 'Один на один'
+//     let arr_member = []
+
+//     // if(game_type == 'Один на один'){
+//     if(game_type == 'Команда на команду'){
+//         arr_member.push(
+//             // <div key={'completion_registration_participants' + counter_users} className="completion_registration_user">
+//             <div key={'completion_registration_participants'} className="completion_registration_user">
+//                 <h1 className="completion_user_number">
+//                     {/* {counter_users++}. */}
+//                     {'1'}.
+//                 </h1>
+
+//                 <div className="completion_user_indent">
+//                     <div className="completion_user_fullName">
+//                         <h1 id="completion_user_fullName_title_1" className="completion_registration_text">
+//                             ФИО:
+//                         </h1>
+//                         <h1 id="completion_user_fullName_text_1" className="completion_registration_text">
+//                             test_text
+//                         </h1>
+//                     </div>
+
+//                     <div className="completion_user_age">
+//                         <h1 id="completion_user_age_title_1" className="completion_registration_text">
+//                             Возраст:
+//                         </h1>
+//                         <h1 id="completion_user_age_text_1" className="completion_registration_text">
+//                             test_text
+//                         </h1>
+//                     </div>
+
+//                     <div className="completion_user_rank">
+//                         <h1 id="completion_user_rank_title_1" className="completion_registration_text">
+//                             Разряд:
+//                         </h1>
+//                         <h1 id="completion_user_rank_text_1" className="completion_registration_text">
+//                             test_text
+//                         </h1>
+//                     </div>
+
+//                     <div className="completion_user_photo">
+//                         <h1 id="completion_user_photo_title_1" className="completion_user_photo_title completion_registration_text">
+//                             Фотография:
+//                         </h1>
+//                         <img id="completion_user_photo_img_1"
+//                         className="completion_registration_img" src={user_photo} alt=''>
+
+//                         </img>
+//                     </div>
+//                 </div>
+//             </div>
+//         )
+//     }else if(game_type == 'Один на один'){
+//         arr_member.push(
+//             // <div key={'completion_registration_participants' + counter_users} className="completion_registration_user">
+//             <div key={'completion_registration_participants'} className="completion_registration_user">
+//                 <h1 className="completion_user_number">
+//                     {/* {counter_users++}. */}
+//                     {'1'}.
+//                 </h1>
+
+//                 <div className="completion_user_indent">
+//                     <div className="completion_user_fullName">
+//                         <h1 id="completion_user_fullName_title_1" className="completion_registration_text">
+//                             ФИО:
+//                         </h1>
+//                         <h1 id="completion_user_fullName_text_1" className="completion_registration_text">
+//                             test_text
+//                         </h1>
+//                     </div>
+
+//                     <div className="completion_user_age">
+//                         <h1 id="completion_user_age_title_1" className="completion_registration_text">
+//                             Возраст:
+//                         </h1>
+//                         <h1 id="completion_user_age_text_1" className="completion_registration_text">
+//                             test_text
+//                         </h1>
+//                     </div>
+
+//                     <div className="completion_user_rank">
+//                         <h1 id="completion_user_rank_title_1" className="completion_registration_text">
+//                             Разряд:
+//                         </h1>
+//                         <h1 id="completion_user_rank_text_1" className="completion_registration_text">
+//                             test_text
+//                         </h1>
+//                     </div>
+
+//                     <div className="completion_user_photo">
+//                         <h1 id="completion_user_photo_title_1" className="completion_user_photo_title completion_registration_text">
+//                             Фотография:
+//                         </h1>
+//                         <img id="completion_user_photo_img_1"
+//                         className="completion_registration_img" src={user_photo} alt=''>
+
+//                         </img>
+//                     </div>
+//                 </div>
+//             </div>
+//         )
+//     }
+
+
+//     ReactDOM.render(arr_member, document.querySelector('.completion_registration_participants'))
+// }
+        fillingParticipants_btn_proceed.addEventListener('click', async function(){
+                // let number_team = 4
+                // let number_people_team = 4
+//                 let tournament_data
+//                 let id_tournament = localStorage.getItem('tournament_id')
+
+//                 let tournament = {id: mongoose.Types.ObjectId(id_tournament)}
+//                 try {
+//                     tournament_data = await request('/api/auth/memberData', 'POST', {...tournament})
+//                 } catch (e) {}
+// console.log(tournament_data)
+
+                // let number_team = Number(document.querySelector('#basic_information_teamsAmount_input').value)
+                // let number_people_team = Number(document.querySelector('#basic_information_participants_amount').value)
+
+
+                // let array_user_fields = []
+                // let we = generation_complete_checkout()
+                // const copyOfUser = Object.assign({}, we);
+                // let element_line
+                // let intermediate_variable
+
+                // ReactDOM.render(array_team_ret(), document.querySelector('.completion_registration_participants'))
+
+                // for(let ii = 0; ii < number_team; ii++){
+                // for(let i = 0; i < number_people_team; i++){
+                //     array_user_fields.push(we[i])
+                // }
+                // element_line = "element_line_" + ii
+                // intermediate_variable = '#' + element_line
+
+                // ReactDOM.render(array_user_fields, document.querySelector(`${intermediate_variable}`))
+                // array_user_fields = []
+                // }
+                // take_data_fields()
+
+                // console.log(array_user_fields)
             }
         )
 
@@ -140,25 +290,23 @@ const SwissPage = () => {
         const previous_page_link = document.querySelectorAll(".previous_page_link")
 
         link_login[0].addEventListener('click', function(){
-        localStorage.setItem('current_screen', "login")
-        localStorage.setItem('previous_screen', "swiss")
-        window.location.reload()
+            localStorage.setItem('current_screen', "login")
+            localStorage.setItem('previous_screen', "swiss")
         })
         link_login[1].addEventListener('click', function(){
-        localStorage.setItem('current_screen', "login")
-        localStorage.setItem('previous_screen', "swiss")
-        window.location.reload()
+            localStorage.setItem('current_screen', "login")
+            localStorage.setItem('previous_screen', "swiss")
         })
 
         previous_page_link[0].addEventListener('click', function(){
-        // let previous_screen = localStorage.getItem('previous_screen')
+            // let previous_screen = localStorage.getItem('previous_screen')
 
-        localStorage.setItem('current_screen', "start")
-        localStorage.setItem('previous_screen', "swiss")
+            localStorage.setItem('current_screen', "start")
+            localStorage.setItem('previous_screen', "swiss")
         })
         previous_page_link[1].addEventListener('click', function(){
-        localStorage.setItem('current_screen', "start")
-        localStorage.setItem('previous_screen', "swiss")
+            localStorage.setItem('current_screen', "start")
+            localStorage.setItem('previous_screen', "swiss")
         })
     }, 1)
 

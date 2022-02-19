@@ -1,12 +1,13 @@
 import user_photo from "../img/user.png"
 
-let number_users = 7
+// let number_users = 7
+let number_users
 let counter_users = 0
 
 // Тип игры. 1 обозначает 1 vs 1
 // 2 обозначает team vs team
 // Достать из бд
-let game_type = 2
+let game_type = localStorage.getItem('gameType') || 'Один на один'
 
 function validate(e){
     let theEvent = e || window.event;
@@ -25,8 +26,10 @@ export function generation_fillingParticipants() {
     counter_users = 0
     let users_id, btn_id, user_photo_id, input_fio_id
     let input_age_id, input_rank_id, user_photo_key,btn_hide_id
+    number_users = Number(document.querySelector('#basic_information_participants_amount').value)
 
-    if(game_type == 1){
+    game_type = localStorage.getItem('gameType')
+    if(game_type == 'Один на один'){
         for(let i = 0; i < number_users; i++){
             counter_users++
             users_id = "fillingParticipants_user_container_" + counter_users
@@ -49,21 +52,21 @@ export function generation_fillingParticipants() {
                             <h1 className="fillingParticipants_title">
                                 ФИО
                             </h1>
-                            <input id={input_fio_id} className="input_txBox input_txBox_title" type="text"></input>
+                            <input defaultValue={'Test_fio'} id={input_fio_id} className="input_txBox input_txBox_title" type="text"></input>
                         </div>
 
                         <div className="fillingParticipants_age">
                             <h1 className="fillingParticipants_title">
                                 Возраст
                             </h1>
-                            <input id={input_age_id} onKeyPress = {validate} className="input_txBox input_txBox_digit" type="text"></input>
+                            <input defaultValue={16} id={input_age_id} onKeyPress = {validate} className="input_txBox input_txBox_digit" type="text"></input>
                         </div>
 
                         <div className="fillingParticipants_discharge">
                             <h1 className="fillingParticipants_title">
                                 Разряд
                             </h1>
-                            <input id={input_rank_id} className="input_txBox input_txBox_discharge" type="text"></input>
+                            <input defaultValue={'1 взрослый'} id={input_rank_id} className="input_txBox input_txBox_discharge" type="text"></input>
                         </div>
                         <button id = {btn_id} className="fillingParticipants_btn">
                             Добавить фотографию участника
@@ -91,9 +94,9 @@ export function generation_fillingParticipants() {
                 </div>
             )
         }
-    } else if(game_type == 2){
-        let number_team = 4
-        let number_people_team = 4
+    } else if(game_type == 'Команда на команду'){
+        let number_team = Number(document.querySelector('#basic_information_teamsAmount_input').value)
+        let number_people_team = Number(document.querySelector('#basic_information_participants_amount').value)
         let hr_team, block_team
 
         for(let ii = 0; ii < number_team; ii++){
@@ -128,21 +131,21 @@ export function generation_fillingParticipants() {
                                 <h1 className="fillingParticipants_title">
                                     ФИО
                                 </h1>
-                                <input id={input_fio_id} className="input_txBox input_txBox_title" type="text"></input>
+                                <input defaultValue={'Test_fio'} id={input_fio_id} className="input_txBox input_txBox_title" type="text"></input>
                             </div>
 
                             <div className="fillingParticipants_age">
                                 <h1 className="fillingParticipants_title">
                                     Возраст
                                 </h1>
-                                <input id={input_age_id} onKeyPress = {validate} className="input_txBox input_txBox_digit" type="text"></input>
+                                <input defaultValue={16} id={input_age_id} onKeyPress = {validate} className="input_txBox input_txBox_digit" type="text"></input>
                             </div>
 
                             <div className="fillingParticipants_discharge">
                                 <h1 className="fillingParticipants_title">
                                     Разряд
                                 </h1>
-                                <input id={input_rank_id} className="input_txBox input_txBox_discharge" type="text"></input>
+                                <input defaultValue={'1 взрослый'} id={input_rank_id} className="input_txBox input_txBox_discharge" type="text"></input>
                             </div>
                             <button id = {btn_id} className="fillingParticipants_btn">
                                 Добавить фотографию участника
@@ -190,7 +193,9 @@ export function generation_complete_checkout(){
     let array_user_fields = []
     let counter_users = 1
 
-    if(game_type == 1){
+    game_type = localStorage.getItem('gameType')
+
+    if(game_type == 'Один на один'){
         for(let i = 0; i < number_users; i++){
             array_user_fields.push(
                 <div key={'completion_registration_participants' + counter_users} className="completion_registration_user">
@@ -242,9 +247,9 @@ export function generation_complete_checkout(){
 
         return(array_user_fields)
         // ReactDOM.render(array_user_fields, document.querySelector('.completion_registration_participants'))
-    }else if(game_type == 2){
-        let number_team = 4
-        let number_people_team = 4
+    }else if(game_type == 'Команда на команду'){
+        let number_team = Number(document.querySelector('#basic_information_teamsAmount_input').value)
+        let number_people_team = Number(document.querySelector('#basic_information_participants_amount').value)
 
         // for(let ii = 0; ii < number_team; ii++){
         //     let block_team = "block_team" + ii;
@@ -331,7 +336,7 @@ export function generation_complete_checkout(){
 }
 
 export function array_team_ret(){
-    let number_team = 4
+    let number_team = Number(document.querySelector('#basic_information_teamsAmount_input').value)
 
     for(let ii = 0; ii < number_team; ii++){
         let block_team = "block_team" + ii;
@@ -451,11 +456,13 @@ function swiss_r(){
     // )
 
     fillingParticipants_btn_proceed.addEventListener('click', function(){
-        if(game_type == 2){
+        game_type = localStorage.getItem('gameType')
+
+        if(game_type == 'Команда на команду'){
             completion_registration_numberTours_title.textContent = "Человек в одной команде:"
 
             block_number_commands.classList.remove('hide')
-        }else if(game_type == 1){
+        }else if(game_type == 'Один на один'){
             block_number_commands.classList.add('hide')
             completion_registration_numberTours_title.textContent = "Количество участников:"
         }

@@ -29,15 +29,15 @@ let counter = 0
 
 function link_swiss(){
     //Жеребьевка по швейцарской системе
-    window.location.href = "index.html"
+    // document.location.href = "/swiss"
 }
 function link_circle(){
     //Жеребьевка по круговой системе
-    window.location.href = "circle.html"
+    // document.location.href = "/circle"
 }
 function link_exception(){
     //Игра на выбывание
-    window.location.href = "exception.html"
+    // document.location.href = "/exception"
 }
 
 let activeSlideIndex = 0

@@ -117,6 +117,7 @@ function Swiss(){
     const basic_information_proceed = document.querySelector('.basic_information_proceed')
 
     const basic_information_teamsAmount_div = document.querySelector('#basic_information_teamsAmount_div')
+    const horizontal_line_slide_2 = document.querySelector('.horizontal_line_slide_2')
     const basic_information_teamsAmount_input = document.querySelector('#basic_information_teamsAmount_input')
     const basic_information_participants_text = document.querySelector('#basic_information_participants_text')
 
@@ -149,23 +150,23 @@ function Swiss(){
             }
         };
     });
-    
+
     if(localStorage.getItem('startScreen') == undefined){
         localStorage.setItem('startScreen', "0")
         burger_white.classList.add('hide')
-    
+
         scroll.classList.remove('overScr')
     }else if(localStorage.getItem('startScreen') == 0){
         burger_white.classList.add('hide')
-    
+
         scroll.classList.remove('overScr')
     }else if(localStorage.getItem('startScreen') == 1){
         header.classList.add('hide')
         burger_white.classList.remove('hide')
-    
+
         //  Раскоментировать когда будет закончено
         mode_selection.classList.remove('hide')
-    
+
         scroll.classList.add('overScr')
     }
 
@@ -188,9 +189,11 @@ function Swiss(){
             check_activeElement()
             if(slides_db == 1){
                 basic_information_teamsAmount_div.classList.add('hide')
+                horizontal_line_slide_2.classList.add('hide')
                 basic_information_participants_text.textContent = "Количество участников"
             }else if(slides_db == 2){
                 basic_information_teamsAmount_div.classList.remove('hide')
+                horizontal_line_slide_2.classList.remove('hide')
                 basic_information_participants_text.textContent = "Человек в одной команде"
             }
         }
