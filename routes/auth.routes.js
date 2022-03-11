@@ -99,6 +99,67 @@ router.post('/login',
     }
 )
 
+router.post('/delete_tour',
+    async(req, res) => {
+        try{
+            console.log('Body: ', req.body)
+
+            const {tour_id} = req.body
+
+            await Tournament.deleteOne({_id: tour_id})
+
+            res.status(201).json({message: 'Добавление прошло успешно'})
+        }catch(e){
+            res.status(500).json({message: 'Что-то пошло не так, попробуйте снова'})
+        }
+    }
+)
+router.post('/delete_memeber',
+    async(req, res) => {
+        try{
+            console.log('Body: ', req.body)
+
+            const {tour_id} = req.body
+
+            await Member.deleteMany({owner: tour_id})
+
+            res.status(201).json({message: 'Добавление прошло успешно'})
+        }catch(e){
+            res.status(500).json({message: 'Что-то пошло не так, попробуйте снова'})
+        }
+    }
+)
+
+router.post('/user_delete_link',
+    async(req, res) => {
+        try{
+            console.log('Body: ', req.body)
+
+            const {user_id, tournament_id} = req.body
+
+            const asda = await User.updateOne(
+                {_id: user_id},
+
+                {$pull:
+                    {links: {$eq: tournament_id}}
+                }
+            )
+                console.log(asda)
+            res.status(201).json({message: 'Добавление прошло успешно'})
+        }catch(e){
+            res.status(500).json({message: 'Что-то пошло не так, попробуйте снова'})
+        }
+    }
+)
+
+
+
+
+
+
+
+
+
 
 
 
@@ -218,16 +279,36 @@ router.post('/addMember',
     }
 )
 
+router.post('/tournamentLinks',
+    async(req, res) => {
+        try{
+            console.log('Body: ', req.body)
+
+            const {arr_id, link_tournament} = req.body
+
+            await Tournament.updateOne({_id: link_tournament}, { links: [] })
+            await Tournament.updateOne({_id: link_tournament}, { $push: {links: arr_id} })
+
+            res.status(201).json({message: 'Добавление прошло успешно'})
+        }catch(e){
+            res.status(500).json({message: 'Что-то пошло не так, попробуйте снова'})
+        }
+    }
+)
+
+
+
+
 
 router.post('/tournamentData',
     async(req, res) => {
         try{
             console.log('Body: ', req.body)
 
-            const {id} = req.body
-
-            const tournament_data = await Tournament.findOne({id})
-console.log(tournament_data)
+            const {id_tournament} = req.body
+            const tournament_data = await Tournament.findOne({_id: id_tournament})
+            console.log(tournament_data)
+            
             res.json({tournament_data})
         }catch(e){
             res.status(500).json({message: 'Что-то пошло не так, попробуйте снова'})
@@ -243,13 +324,39 @@ router.post('/memberData',
             const {id} = req.body
 
             const member_data = await Member.find({owner: id})
-console.log(member_data)
+
             res.json({tournament_data: member_data})
         }catch(e){
             res.status(500).json({message: 'Что-то пошло не так, попробуйте снова'})
         }
     }
 )
+
+
+router.post('/tournamentData_many',
+    async(req, res) => {
+        try{
+            console.log('Body: ', req.body)
+
+            const {tournament_id} = req.body
+
+            const tournament_data = await Tournament.find({owner: tournament_id})
+
+            res.json({tournament_data})
+        }catch(e){
+            res.status(500).json({message: 'Что-то пошло не так, попробуйте снова'})
+        }
+    }
+)
+
+
+
+
+
+
+
+
+
 
 
 
