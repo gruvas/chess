@@ -9,6 +9,9 @@ const mongoose = require('mongoose')
 function personal_area_link(){
     document.location.href = "/personal_area"
 }
+function main_swiss(){
+    document.location.href = "/main_swiss"
+}
 
 export const SwissDom = () => {
     const {request} = useHttp()
@@ -127,7 +130,6 @@ export const SwissDom = () => {
                     counter_people++
                 }
             }
-
             new_obj = Object.assign({}, new_arr)
         }
 
@@ -135,20 +137,25 @@ export const SwissDom = () => {
 
         try {
             const addGame_type = await request('/api/auth/addMember', 'POST', {...new_obj})
-            tournament_data = await request('/api/auth/tournamentData', 'POST', {...tournament})
+            let intermediate = await request('/api/auth/tournamentData', 'POST', {id_tournament})
+            tournament_data = intermediate.tournament_data
         } catch (e) {}
 
 
+        console.log(tournament)
+        console.log(tournament_data)
+        console.log(new_obj)
+        console.log(id_tournament)
 
-        let tour_name = tournament_data.tournament_data.name_tour
-        let tour_org = tournament_data.tournament_data.organizer
+        let tour_name = tournament_data.name_tour
+        let tour_org = tournament_data.organizer
 
-        let tour_time = tournament_data.tournament_data.date_beginning +
-        " - " + tournament_data.tournament_data.date_expiration
+        let tour_time = tournament_data.date_beginning +
+        " - " + tournament_data.date_expiration
 
-        let people_team = tournament_data.tournament_data.participants_number
+        let people_team = tournament_data.participants_number
 
-        let tours_number = tournament_data.tournament_data.tours_number
+        let tours_number = tournament_data.tours_number
 
 
         document.querySelector('.completion_registration_name_text').textContent = tour_name
@@ -159,44 +166,32 @@ export const SwissDom = () => {
 
 
         if(slide_test == 'slide_2'){
-            let teams_number = tournament_data.tournament_data.teams_number
+            let teams_number = tournament_data.teams_number
             document.querySelector('.completion_registration_numberTeams_text ').textContent = teams_number
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-     
         let member_data
 
         try {
                 member_data = await request('/api/auth/memberData', 'POST', {...tournament})
-    
-                console.log(member_data.tournament_data)
-                console.log(member_data.tournament_data.length)
-                console.log(member_data.tournament_data[0])
+
+                        // const intermediate_sending = await request('/api/auth/tournamentLinks', 'POST', {...new_obj})
+
         } catch (e) {}
-    
+
+        let arr_id = []
+        let link_tournament = mongoose.Types.ObjectId(id_tournament)
+
+        for(let i = 0; i < member_data.tournament_data.length; i++){
+            arr_id.push(mongoose.Types.ObjectId(member_data.tournament_data[i]._id))
+        }
+
+        try {
+            await request('/api/auth/tournamentLinks', 'POST', {arr_id, link_tournament})
+        } catch (e) {}
+
+
+
         // setTimeout(function(){
         //     document.querySelector('.mode_selection').classList.toggle('hide')
         //     window.scrollTo({top: 0});
@@ -613,7 +608,7 @@ export const SwissDom = () => {
                         <button id="completion_registration_btn_comeBack" className="main_btn">
                             Вернуться назад
                         </button>
-                        <button id="completion_registration_btn_proceed" className="main_btn">
+                        <button id="completion_registration_btn_proceed" className="main_btn" onClick={main_swiss}>
                             Завершить оформление
                         </button>
                     </div>

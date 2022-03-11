@@ -801,10 +801,6 @@ right: -28px;
   justify-content: space-between;
 }
 
-.basic_information_numberTeam{
-  /* margin-left: 120px; */
-}
-
 .fillingParticipants_user_fields{
   display: flex;
 
@@ -980,6 +976,8 @@ right: -28px;
   margin-left: 15px;
 
   font-weight: 100;
+
+  white-space: nowrap;
 }
 
 .completion_registration_hr{
@@ -1087,6 +1085,94 @@ right: -28px;
 }
 
 
+.popup{
+  position: fixed;
+
+  width: 100%;
+  height: 110%;
+  top: 0;
+  left: 0;
+
+  margin-top: -15px;
+
+  background-color: rgba(255, 255, 255, 0);
+
+  visibility: hidden;
+  transition: all 0.4s ease-in-out;
+}
+
+.popup.active{
+  visibility: visible;
+  background-color: rgba(0, 0, 0, 0.541);
+}
+
+.popub_body{
+  min-height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 30px 10px;
+}
+
+.popub_content{
+  color: #000;
+  background-color: #fff;
+
+  width: 350px;
+  height: 120px;
+
+  visibility: hidden;
+
+  border-radius: 5px;
+}
+
+.active .popub_content{
+  visibility: visible;
+}
+
+
+
+
+
+.popub_title{
+  text-align: center;
+
+  margin-top: 12px;
+}
+
+.popup_block_btn, .popup_block_btn_missing{
+  display: flex;
+  justify-content: space-evenly;
+
+  margin-top: 30px;
+}
+
+.popup_btn{
+  width: 75px;
+  height: 40px;
+  color: #fff;
+  padding-top: 10px;
+
+  border-radius: 15px;
+}
+
+.popup_btn_yes{
+  background-color: #000;
+}
+
+.popup_btn_no{
+  background-color: #cc3300;
+}
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1125,6 +1211,17 @@ right: -28px;
   margin-left: 10px;
 }
 
+.continue_tour_missing{
+  font-size: 19px !important;
+  font-weight: 700;
+
+  color: #cc3300;
+}
+
+.invisible_id{
+  display: none;
+}
+
 .continue_tour_name_text, .continue_tour_organizer_text{
   width: 488px;
 }
@@ -1149,6 +1246,10 @@ right: -28px;
 
 .continue_tour_bt_delete{
   background-color: #cc3300;
+}
+
+.continue_tour_bt_missing{
+  margin-bottom: 23px;
 }
 
 .continue_tour_hr{
@@ -1179,6 +1280,93 @@ right: -28px;
 
 
 
+.mainSwiss_unit_players{
+  margin-top: 25px;
+}
+
+.mainSwiss_number_text{
+  text-align: center;
+  font-size: 24px;
+
+  margin-top: 15px;
+}
+
+
+.mainSwiss_board_players{
+  display: flex;
+  justify-content: space-evenly;
+
+  margin-top: 20px;
+}
+
+.mainSwiss_board_player_field{
+  margin-top: 10px;
+
+  text-align: center;
+}
+
+.mainSwiss_board_btn{
+  display: flex;
+  justify-content: space-evenly;
+  color: #000;
+
+  margin-top: 25px;
+}
+
+.mainSwiss_board_btn_victory, .mainSwiss_board_btn_draw{
+  width: 95px;
+  height: 35px;
+
+  color: #000;
+  border: 1px solid #000;
+  border-radius: 5px;
+
+  padding-top: 6px;
+}
+
+.mainSwiss_board_btn_victory.active{
+  background-color: #32db32bb;
+}
+.mainSwiss_board_btn_draw.active{
+  background-color: #ffff00bb;
+}
+
+.mainSwiss_board_btn_draw{
+  color: #000;
+}
+
+.mainSwiss_user_photo{
+  width: 112px;
+}
+
+.mainSwiss_start_round{
+  width: 100%;
+  height: 35px;
+
+  padding-top: 7px;
+  margin-top: 35px;
+
+  color: #000;
+  background-color: #FFCB7B;
+
+  border-radius: 15px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1199,17 +1387,7 @@ right: -28px;
     width: 211px;
   }
 }
-@media (max-width: 714px){
-  .continue_tour_bt{
-    transform: none;
 
-    margin-top: 15px;
-  }
-  .continue_tour_space_between{
-    display: block;
-    justify-content: none;
-  }
-}
 @media (max-width: 374px){
   .continue_tour_main div{
     display: block;
@@ -1226,14 +1404,14 @@ right: -28px;
 }
 
 @media (max-width: 748px){
+  .continue_tour_bt{
+    transform: none;
+
+    margin-top: 15px;
+  }
   .continue_tour_space_between{
     display: block;
     justify-content: none;
-  }
-  .competed_tour_bt{
-    transform: none;
-
-    margin-top: 5px;
   }
 }
 @media (max-width: 417px){
@@ -1450,7 +1628,11 @@ right: -28px;
   }
 }
 
-
+@media (max-width: 330px){
+  .popub_content{
+    height: 150px;
+  }
+}
 
 @media (max-width: 357px){
   .login_btn{
