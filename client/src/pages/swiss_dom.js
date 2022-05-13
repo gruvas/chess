@@ -9,9 +9,67 @@ const mongoose = require('mongoose')
 function personal_area_link(){
     document.location.href = "/personal_area"
 }
+
 function main_swiss(){
     document.location.href = "/main_swiss"
 }
+
+let maximum_number_tours = 2
+
+function field_validation(){
+    let game_type = localStorage.getItem('gameType') || 'Один на один'
+
+    const warning = document.querySelector('.warning_number_tours')
+    const maximum_number_tours_p = document.querySelector('.maximum_number_tours')
+
+    const btn_next = document.querySelector('.basic_information_proceed')
+
+
+    if(game_type == 'Один на один'){
+        const tours = document.querySelector('.basic_information_numberTours_input').value
+        const players = document.querySelector('#basic_information_participants_amount').value
+        
+        if(tours > players - 1 || tours < 1){
+            maximum_number_tours = players - 1
+
+            maximum_number_tours_p.textContent = Math.ceil(maximum_number_tours)
+
+            warning.classList.remove('hide')
+
+            btn_next.disabled = true
+            
+            return false
+        }else{
+            warning.classList.add('hide')
+            
+            btn_next.disabled = false
+
+            return true
+        }
+    }else if(game_type == 'Команда на команду'){
+        const tours = document.querySelector('.basic_information_numberTours_input').value
+        const players = document.querySelector('#basic_information_teamsAmount_input').value
+
+        if(tours > players/2){
+            maximum_number_tours = players/2
+
+            maximum_number_tours_p.textContent = Math.ceil(maximum_number_tours)
+
+            warning.classList.remove('hide')
+
+            btn_next.disabled = true
+
+            return false
+        }else{
+            warning.classList.add('hide')
+
+            btn_next.disabled = false
+
+            return true
+        }
+    }
+}
+
 
 export const SwissDom = () => {
     const {request} = useHttp()
@@ -140,12 +198,6 @@ export const SwissDom = () => {
             let intermediate = await request('/api/auth/tournamentData', 'POST', {id_tournament})
             tournament_data = intermediate.tournament_data
         } catch (e) {}
-
-
-        console.log(tournament)
-        console.log(tournament_data)
-        console.log(new_obj)
-        console.log(id_tournament)
 
         let tour_name = tournament_data.name_tour
         let tour_org = tournament_data.organizer
@@ -466,7 +518,7 @@ export const SwissDom = () => {
                                 <h1 className="basic_information_title basic_information_numberTours_title">
                                     Количество туров
                                 </h1>
-                                <input defaultValue={16} id="basic_information_tours_amount" onKeyPress={validate} type="text" className="basic_information_numberTours_input input_txBox"></input>
+                                <input defaultValue={2} onInput={field_validation} id="basic_information_tours_amount" onKeyPress={validate} type="text" className="basic_information_numberTours_input input_txBox"></input>
                             </div>
 
                             <div className="horizontal_line"></div>
@@ -475,9 +527,8 @@ export const SwissDom = () => {
                                 <h1 id="basic_information_participants_text" className="basic_information_title basic_information_numberParticipants_title">
                                     Количество участников
                                 </h1>
-                                <input defaultValue={4} id="basic_information_participants_amount" onKeyPress={validate} type="text" className="basic_information_numberParticipants_input input_txBox"></input>
+                                <input defaultValue={4} onInput={field_validation} id="basic_information_participants_amount" onKeyPress={validate} type="text" className="basic_information_numberParticipants_input input_txBox"></input>
                             </div>
-
                         </div>
 
                         <div className="basic_information_Container">
@@ -485,7 +536,7 @@ export const SwissDom = () => {
                                 <h1 id="basic_information_teamsAmount_text" className="basic_information_title basic_information_numberParticipants_title">
                                     Количество команд
                                 </h1>
-                                <input defaultValue={4} id="basic_information_teamsAmount_input" onKeyPress={validate} type="text" className="basic_information_numberParticipants_input input_txBox"></input>
+                                <input defaultValue={4} onInput={field_validation} id="basic_information_teamsAmount_input" onKeyPress={validate} type="text" className="basic_information_numberParticipants_input input_txBox"></input>
                             </div>
 
                             <div className="horizontal_line horizontal_line_slide_2"></div>
@@ -503,6 +554,19 @@ export const SwissDom = () => {
                                     <input id="inf_dataExpiration_input" type="text" defaultValue={'21.09.2021'}
                                      className="inf_dataExpiration_input input_txBox" placeholder="Дата окончания"></input>
                                 </div>
+                            </div>
+                        </div>
+
+                        <div className="warning_number_tours hide">
+                            <div className="warning_number_tours_flex">
+                                
+                                <div className="warning_tours_flex">
+                                    <p>Количество туров не должно превышать&#160;</p>
+
+                                    <p className="maximum_number_tours">{maximum_number_tours}</p>
+                                </div>
+
+                                &#160;и быть меньше 1
                             </div>
                         </div>
 
