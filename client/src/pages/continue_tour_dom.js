@@ -1,6 +1,7 @@
 import ReactDOM from "react-dom"
 import { useHttp } from '../hooks/http.hook'
 
+const mongoose = require('mongoose')
 
 
 function regular(line){
@@ -53,255 +54,257 @@ function round_generation(arr_tournament){
 
     for(let i = 0; i < arr_tournament.length; i++){
         if(arr_tournament[i].finished_tournament == false){
-            if(arr_tournament[i].type_game == 'Один на один'){
-                arr_round.push(
-                    <div key={'render_container' + i}>
-                        <div className="invisible_id" id={'invisible_id_' + i}>
-                            {arr_tournament[i]._id}
-                        </div>
-                        <div className="continue_tour_space_between">
-                            <div className="continue_tour">
-                                <p className="continue_tour_number">{++tournament_counter}.</p>
+            if(arr_tournament[i].full == true){
+                if(arr_tournament[i].type_game == 'Один на один'){
+                    arr_round.push(
+                        <div key={'render_container' + i}>
+                            <div className="invisible_id" id={'invisible_id_' + i}>
+                                {arr_tournament[i]._id}
+                            </div>
+                            <div className="continue_tour_space_between">
+                                <div className="continue_tour">
+                                    <p className="continue_tour_number">{++tournament_counter}.</p>
 
-                                <div className="continue_tour_main">
-                                    <div className="continue_tour_name">
-                                        <p>
-                                            Название:
-                                        </p>
+                                    <div className="continue_tour_main">
+                                        <div className="continue_tour_name">
+                                            <p>
+                                                Название:
+                                            </p>
 
-                                        <p className="continue_tour_text continue_tour_name_text">
-                                            {arr_tournament[i].name_tour}
-                                        </p>
-                                    </div>
+                                            <p className="continue_tour_text continue_tour_name_text">
+                                                {arr_tournament[i].name_tour}
+                                            </p>
+                                        </div>
 
-                                    <div className="continue_tour_organizer">
-                                        <p>
-                                            Организатор:
-                                        </p>
+                                        <div className="continue_tour_organizer">
+                                            <p>
+                                                Организатор:
+                                            </p>
 
-                                        <p className="continue_tour_text continue_tour_organizer_text">
-                                            {arr_tournament[i].organizer}
-                                        </p>
-                                    </div>
+                                            <p className="continue_tour_text continue_tour_organizer_text">
+                                                {arr_tournament[i].organizer}
+                                            </p>
+                                        </div>
 
-                                    <div className="continue_tour_organizer">
-                                        <p>
-                                            Тип жеребьевки:
-                                        </p>
+                                        <div className="continue_tour_organizer">
+                                            <p>
+                                                Тип жеребьевки:
+                                            </p>
 
-                                        <p className="continue_tour_text continue_tour_organizer_text">
-                                            {arr_tournament[i].type_tournament}
-                                        </p>
-                                    </div>
+                                            <p className="continue_tour_text continue_tour_organizer_text">
+                                                {arr_tournament[i].type_tournament}
+                                            </p>
+                                        </div>
 
-                                    <div className="continue_tour_date">
-                                        <p>
-                                            Даты проведения:
-                                        </p>
+                                        <div className="continue_tour_date">
+                                            <p>
+                                                Даты проведения:
+                                            </p>
 
-                                        <p className="continue_tour_text">
-                                            {arr_tournament[i].date_beginning} - {arr_tournament[i].date_expiration}
-                                        </p>
-                                    </div>
+                                            <p className="continue_tour_text">
+                                                {arr_tournament[i].date_beginning} - {arr_tournament[i].date_expiration}
+                                            </p>
+                                        </div>
 
-                                    <div className="continue_tour_type">
-                                        <p>
-                                            Тип игры:
-                                        </p>
+                                        <div className="continue_tour_type">
+                                            <p>
+                                                Тип игры:
+                                            </p>
 
-                                        <p className="continue_tour_text">
-                                            {arr_tournament[i].type_game}
-                                        </p>
-                                    </div>
+                                            <p className="continue_tour_text">
+                                                {arr_tournament[i].type_game}
+                                            </p>
+                                        </div>
 
-                                    <div className="continue_tour_players">
-                                        <p>
-                                            Количество игроков:
-                                        </p>
+                                        <div className="continue_tour_players">
+                                            <p>
+                                                Количество игроков:
+                                            </p>
 
-                                        <p className="continue_tour_text">
-                                            {arr_tournament[i].participants_number}
-                                        </p>
-                                    </div>
+                                            <p className="continue_tour_text">
+                                                {arr_tournament[i].participants_number}
+                                            </p>
+                                        </div>
 
-                                    <div className="continue_tour_players">
-                                        <p>
-                                            Продолжительность игры:
-                                        </p>
+                                        <div className="continue_tour_players">
+                                            <p>
+                                                Продолжительность игры:
+                                            </p>
 
-                                        <p className="continue_tour_text">
-                                            {arr_tournament[i].time_tour} {arr_tournament[i].time_type_tour} 
-                                        </p>
-                                    </div>
+                                            <p className="continue_tour_text">
+                                                {arr_tournament[i].time_tour} {arr_tournament[i].time_type_tour} 
+                                            </p>
+                                        </div>
 
 
-                                    <div className="continue_tour_tours">
-                                        <p>
-                                            Общее количество туров:
-                                        </p>
+                                        <div className="continue_tour_tours">
+                                            <p>
+                                                Общее количество туров:
+                                            </p>
 
-                                        <p className="continue_tour_text">
-                                            {arr_tournament[i].tours_number}
-                                        </p>
-                                    </div>
+                                            <p className="continue_tour_text">
+                                                {arr_tournament[i].tours_number}
+                                            </p>
+                                        </div>
 
-                                    <div className="continue_tour_completed_tours">
-                                        <p>
-                                            Текущий тур:
-                                        </p>
+                                        <div className="continue_tour_completed_tours">
+                                            <p>
+                                                Текущий тур:
+                                            </p>
 
-                                        <p className="continue_tour_text">
-                                            {arr_tournament[i].current_tour}
-                                        </p>
+                                            <p className="continue_tour_text">
+                                                {arr_tournament[i].current_tour}
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
+
+                                <section  className="continue_tour_bt">
+                                    <button className="continue_tour_bt_select btn_select" id={'btn_select' + btn_select}>
+                                        Выбрать
+                                    </button>
+
+                                    <button className="continue_tour_bt_delete btn_delete" id={'btn_delete' + btn_select}>
+                                        Удалить
+                                    </button>
+                                </section>
                             </div>
 
-                            <section  className="continue_tour_bt">
-                                <button className="continue_tour_bt_select btn_select" id={'btn_select' + btn_select}>
-                                    Выбрать
-                                </button>
-
-                                <button className="continue_tour_bt_delete btn_delete" id={'btn_delete' + btn_select}>
-                                    Удалить
-                                </button>
-                            </section>
+                            <hr className="continue_tour_hr"></hr>
                         </div>
+                    )
+                    btn_select++
+                }else if(arr_tournament[i].type_game == 'Команда на команду'){
+                    arr_round.push(
+                        <div key={'render_container' + i}>
+                            <div className="invisible_id" id={'invisible_id_' + i}>
+                                {arr_tournament[i]._id}
+                            </div>
+                            <div className="continue_tour_space_between">
+                                <div className="continue_tour">
+                                    <p className="continue_tour_number">{++tournament_counter}.</p>
 
-                        <hr className="continue_tour_hr"></hr>
-                    </div>
-                )
-                btn_select++
-            }else if(arr_tournament[i].type_game == 'Команда на команду'){
-                arr_round.push(
-                    <div key={'render_container' + i}>
-                        <div className="invisible_id" id={'invisible_id_' + i}>
-                            {arr_tournament[i]._id}
-                        </div>
-                        <div className="continue_tour_space_between">
-                            <div className="continue_tour">
-                                <p className="continue_tour_number">{++tournament_counter}.</p>
+                                    <div className="continue_tour_main">
+                                        <div className="continue_tour_name">
+                                            <p>
+                                                Название:
+                                            </p>
 
-                                <div className="continue_tour_main">
-                                    <div className="continue_tour_name">
-                                        <p>
-                                            Название:
-                                        </p>
+                                            <p className="continue_tour_text continue_tour_name_text">
+                                                {arr_tournament[i].name_tour}
+                                            </p>
+                                        </div>
 
-                                        <p className="continue_tour_text continue_tour_name_text">
-                                            {arr_tournament[i].name_tour}
-                                        </p>
-                                    </div>
+                                        <div className="continue_tour_organizer">
+                                            <p>
+                                                Организатор:
+                                            </p>
 
-                                    <div className="continue_tour_organizer">
-                                        <p>
-                                            Организатор:
-                                        </p>
+                                            <p className="continue_tour_text continue_tour_organizer_text">
+                                                {arr_tournament[i].organizer}
+                                            </p>
+                                        </div>
 
-                                        <p className="continue_tour_text continue_tour_organizer_text">
-                                            {arr_tournament[i].organizer}
-                                        </p>
-                                    </div>
+                                        <div className="continue_tour_organizer">
+                                            <p>
+                                                Тип жеребьевки:
+                                            </p>
 
-                                    <div className="continue_tour_organizer">
-                                        <p>
-                                            Тип жеребьевки:
-                                        </p>
+                                            <p className="continue_tour_text continue_tour_organizer_text">
+                                                {arr_tournament[i].type_tournament}
+                                            </p>
+                                        </div>
 
-                                        <p className="continue_tour_text continue_tour_organizer_text">
-                                            {arr_tournament[i].type_tournament}
-                                        </p>
-                                    </div>
+                                        <div className="continue_tour_date">
+                                            <p>
+                                                Даты проведения:
+                                            </p>
 
-                                    <div className="continue_tour_date">
-                                        <p>
-                                            Даты проведения:
-                                        </p>
+                                            <p className="continue_tour_text">
+                                                {arr_tournament[i].date_beginning} - {arr_tournament[i].date_expiration}
+                                            </p>
+                                        </div>
 
-                                        <p className="continue_tour_text">
-                                            {arr_tournament[i].date_beginning} - {arr_tournament[i].date_expiration}
-                                        </p>
-                                    </div>
+                                        <div className="continue_tour_type">
+                                            <p>
+                                                Тип игры:
+                                            </p>
 
-                                    <div className="continue_tour_type">
-                                        <p>
-                                            Тип игры:
-                                        </p>
+                                            <p className="continue_tour_text">
+                                                {arr_tournament[i].type_game}
+                                            </p>
+                                        </div>
 
-                                        <p className="continue_tour_text">
-                                            {arr_tournament[i].type_game}
-                                        </p>
-                                    </div>
+                                        <div className="continue_tour_players">
+                                            <p>
+                                                Количество команд:
+                                            </p>
 
-                                    <div className="continue_tour_players">
-                                        <p>
-                                            Количество команд:
-                                        </p>
+                                            <p className="continue_tour_text">
+                                                {arr_tournament[i].teams_number}
+                                            </p>
+                                        </div>
 
-                                        <p className="continue_tour_text">
-                                            {arr_tournament[i].teams_number}
-                                        </p>
-                                    </div>
+                                        <div className="continue_tour_players">
+                                            <p>
+                                                Количество игроков в команде:
+                                            </p>
 
-                                    <div className="continue_tour_players">
-                                        <p>
-                                            Количество игроков в команде:
-                                        </p>
+                                            <p className="continue_tour_text">
+                                                {arr_tournament[i].participants_number}
+                                            </p>
+                                        </div>
 
-                                        <p className="continue_tour_text">
-                                            {arr_tournament[i].participants_number}
-                                        </p>
-                                    </div>
+                                        <div className="continue_tour_players">
+                                            <p>
+                                                Продолжительность игры:
+                                            </p>
 
-                                    <div className="continue_tour_players">
-                                        <p>
-                                            Продолжительность игры:
-                                        </p>
-
-                                        <p className="continue_tour_text">
-                                            {arr_tournament[i].time_tour} {arr_tournament[i].time_type_tour} 
-                                        </p>
-                                    </div>
+                                            <p className="continue_tour_text">
+                                                {arr_tournament[i].time_tour} {arr_tournament[i].time_type_tour} 
+                                            </p>
+                                        </div>
 
 
-                                    <div className="continue_tour_tours">
-                                        <p>
-                                            Общее количество туров:
-                                        </p>
+                                        <div className="continue_tour_tours">
+                                            <p>
+                                                Общее количество туров:
+                                            </p>
 
-                                        <p className="continue_tour_text">
-                                            {arr_tournament[i].tours_number}
-                                        </p>
-                                    </div>
+                                            <p className="continue_tour_text">
+                                                {arr_tournament[i].tours_number}
+                                            </p>
+                                        </div>
 
-                                    <div className="continue_tour_completed_tours">
-                                        <p>
-                                            Текущий тур:
-                                        </p>
+                                        <div className="continue_tour_completed_tours">
+                                            <p>
+                                                Текущий тур:
+                                            </p>
 
-                                        <p className="continue_tour_text">
-                                            {arr_tournament[i].current_tour}
-                                        </p>
+                                            <p className="continue_tour_text">
+                                                {arr_tournament[i].current_tour}
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
+
+                                <section  className="continue_tour_bt">
+                                    <button className="continue_tour_bt_select btn_select" id={'btn_select' + btn_select}>
+                                        Выбрать
+                                    </button>
+
+                                    <button className="continue_tour_bt_delete btn_delete" id={'btn_delete' + btn_select}>
+                                        Удалить
+                                    </button>
+                                </section>
                             </div>
 
-                            <section  className="continue_tour_bt">
-                                <button className="continue_tour_bt_select btn_select" id={'btn_select' + btn_select}>
-                                    Выбрать
-                                </button>
-
-                                <button className="continue_tour_bt_delete btn_delete" id={'btn_delete' + btn_select}>
-                                    Удалить
-                                </button>
-                            </section>
+                            <hr className="continue_tour_hr"></hr>
                         </div>
-
-                        <hr className="continue_tour_hr"></hr>
-                    </div>
-                )
-                btn_select++
-            }else{
+                    )
+                    btn_select++
+                }
+            }else if(arr_tournament[i].name_tour == undefined){
                 arr_round.push(
                     <div key={'render_container' + i}>
                         <div className="invisible_id" id={'invisible_id_missing' + btn_select_missing}>
@@ -326,6 +329,72 @@ function round_generation(arr_tournament){
 
                                         <p className="continue_tour_text continue_tour_name_text">
                                             Отсутствует
+                                        </p>
+                                    </div>
+
+                                    <div className="continue_tour_type">
+                                        <p>
+                                            Тип жеребьевки:
+                                        </p>
+
+                                        <p className="continue_tour_text">
+                                            {arr_tournament[i].type_tournament}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <section  className="continue_tour_bt continue_tour_bt_missing">
+                                <button className="continue_tour_bt_select btn_select_missing" id={'btn_select_missing' + btn_select_missing}>
+                                    Выбрать
+                                </button>
+
+                                <button className="continue_tour_bt_delete btn_delete_missing" id={'btn_delete_missing' + btn_select_missing}>
+                                    Удалить
+                                </button>
+                            </section>
+                        </div>
+
+                        <hr className="continue_tour_hr"></hr>
+                    </div>
+                )
+                btn_select_missing++
+            }else{
+                arr_round.push(
+                    <div key={'render_container' + i}>
+                        <div className="invisible_id" id={'invisible_id_missing' + btn_select_missing}>
+                            {arr_tournament[i]._id}
+                        </div>
+                        <div className="continue_tour_space_between">
+                            <div className="continue_tour">
+                                <p className="continue_tour_number">{++tournament_counter}.</p>
+                                <div className="continue_tour_main">
+                                    <div className="continue_tour_type">
+                                        <p className="continue_tour_missing">
+                                            Основная информация по  
+                                        </p>
+                                        <p className="continue_tour_missing">
+                                            данному турниру отсутствует
+                                        </p>
+                                    </div>
+                                    
+                                    <div className="continue_tour_name">
+                                        <p>
+                                            Название: 
+                                        </p>
+
+                                        <p className="continue_tour_text continue_tour_name_text">
+                                            {arr_tournament[i].name_tour}
+                                        </p>
+                                    </div>
+                                    
+                                    <div className="continue_tour_name">
+                                        <p>
+                                            Организатор: 
+                                        </p>
+
+                                        <p className="continue_tour_text continue_tour_name_text">
+                                            {arr_tournament[i].organizer}
                                         </p>
                                     </div>
 
@@ -388,7 +457,7 @@ function round_generation(arr_tournament){
 
 
 
-
+let member_data
 let arr_tournament
 
 export const ContinueTour = () => {
@@ -419,6 +488,13 @@ export const ContinueTour = () => {
         } catch (e) {}
     }
 
+    const memberData = async (id) => {
+        try {
+            let intermediate = await request('/api/auth/memberData', 'POST', {id})
+            member_data = intermediate.tournament_data
+        } catch (e) {}
+    }
+
 
     window.onload = async function() {
         const menu_icon_black = document.querySelector("#menu_icon_black")
@@ -427,7 +503,18 @@ export const ContinueTour = () => {
         let tournament_id = JSON.parse(localStorage.getItem('useData')).userId
 
         await tournamentData(tournament_id)
-        console.log(arr_tournament)
+        
+        for(let i = 0; i < arr_tournament.length; i++){
+            let id = arr_tournament[i]._id
+
+            await memberData(id)
+
+            if(member_data.length == 0){
+                arr_tournament[i].full = false
+            }else{
+                arr_tournament[i].full = true
+            }
+        }
 
         round_generation(arr_tournament)
 
@@ -441,8 +528,6 @@ export const ContinueTour = () => {
 
                 document.querySelector('.popup').classList.add('active')
                 document.querySelector('.popup_block_btn').classList.remove('hide')
-
-                console.log(id_tour)
             })
         }
 
@@ -514,9 +599,6 @@ export const ContinueTour = () => {
         let btn_select_missing = document.querySelectorAll('.btn_select_missing').length
 
         for(let i = 0; i < btn_select_missing; i++){
-            console.log(i)
-            console.log(document.querySelector(`#btn_select_missing${i}`))
-
             document.querySelector(`#btn_select_missing${i}`).addEventListener('click', async function(event){
                 await definition_id_missing(event)
 
