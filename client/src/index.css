@@ -643,6 +643,12 @@ right: -28px;
   margin-bottom: 20px;
 }
 
+.basic_information_proceed:disabled{
+  cursor: default;
+
+  background-color: #aaa;
+}
+
 .warning_registreting{
   margin-top: 20px;
 
@@ -791,6 +797,25 @@ right: -28px;
 }
 
 .basic_information_amount{
+  display: flex;
+}
+
+.warning_number_tours{
+  display: flex;
+
+  color: red;
+
+  margin-top: 20px;
+
+  font-size: 21px;
+
+  text-align: center;
+}
+
+.warning_number_tours_flex{
+  display: flex;
+}
+.warning_tours_flex{
   display: flex;
 }
 
@@ -1299,10 +1324,41 @@ right: -28px;
   margin-top: 20px;
 }
 
+.mainSwiss_board_player_first{
+  margin-left: 70px;
+
+  /* margin-top: 50%;
+  transform: translate(0, -50%); */
+}
+
+.mainSwiss_board_player_second{
+  margin-right: 70px;
+}
+
+
 .mainSwiss_board_player_field{
-  margin-top: 10px;
+  font-size: 21px;
 
   text-align: center;
+
+  max-width: 210px;
+  
+  margin-top: 10px;
+}
+
+.mainSwiss_not_render{
+  display: block;
+
+  text-align: center;
+}
+
+.mainSwiss_not_render h1{
+  font-size: 21px;
+  font-weight: 100;
+}
+
+.mainSwiss_not_render_first{
+  margin-top: 24%;
 }
 
 .mainSwiss_board_btn{
@@ -1322,21 +1378,38 @@ right: -28px;
   border-radius: 5px;
 
   padding-top: 6px;
+
+  
+  transition: all .3s ease-in-out;
 }
 
 .mainSwiss_board_btn_victory.active{
   background-color: #32db32bb;
+  
+  transition: all .3s ease-in-out;
 }
 .mainSwiss_board_btn_draw.active{
   background-color: #ffff00bb;
+
+  transition: all .3s ease-in-out;
 }
 
 .mainSwiss_board_btn_draw{
   color: #000;
 }
 
+
+.mainSwiss_board_player{
+  /* display: table; */
+}
+
 .mainSwiss_user_photo{
-  width: 112px;
+  display: flex;
+
+  width: 200px;
+
+  margin: 0 auto;
+  margin-top: 20px;  
 }
 
 .mainSwiss_start_round{
@@ -1345,6 +1418,7 @@ right: -28px;
 
   padding-top: 7px;
   margin-top: 35px;
+  margin-bottom: 13px;
 
   color: #000;
   background-color: #FFCB7B;
@@ -1352,9 +1426,74 @@ right: -28px;
   border-radius: 15px;
 }
 
+.mainSwiss_field{
+  display: flex;
+  
+  /* width: 230px; */
+  width: 285px;
+  min-height: 45px;
+  max-height: 90px;
 
+  background-color: #FFCB7B;
 
+  margin-bottom: 10px;
 
+  border-radius: 7px;
+}
+
+.mainSwiss_field h1{
+  padding: 0 7px;
+}
+
+.mainSwiss_field_score{
+  text-align: center;
+}
+
+.mainSwiss_field_three{
+  justify-content: space-around;
+}
+
+.mainSwiss_field_three h1{
+  font-size: 17px;
+  font-weight: 100;
+
+  top: 0;
+  bottom: 0;
+  margin: auto 0;
+}
+.mainSwiss_field_three p{
+  font-size: 18px;
+  font-weight: 400;
+
+  top: 0;
+  bottom: 0;
+  margin: auto 0;
+}
+
+.mainSwiss_field_two{
+  justify-content: space-between;
+}
+
+.mainSwiss_field_two p{
+  font-size: 18px;
+  font-weight: 100;
+
+  top: 0;
+  bottom: 0;
+  margin: auto 0;
+
+  margin-left: 10px;
+}
+.mainSwiss_field_two h1{
+  font-size: 17px;
+  font-weight: 400;
+
+  top: 0;
+  bottom: 0;
+  margin: auto 0;
+
+  margin-right: 10px;
+}
 
 
 
@@ -1444,6 +1583,151 @@ right: -28px;
   }
 }
 
+@media (max-width: 915px){
+  .mainSwiss_board_player_field{
+    font-size: 17px;
+  }
+  .mainSwiss_not_render h1{
+    font-size: 17px;
+  }
+
+  .mainSwiss_user_photo{
+    width: 100px;
+  }
+
+  .mainSwiss_field_three p{
+    font-size: 14px;
+  }
+
+  .mainSwiss_field_three h1{
+    font-size: 13px;
+  }
+  
+  .mainSwiss_field_two p{
+    font-size: 14px;
+  }
+
+  .mainSwiss_field_two h1{
+    font-size: 13px;
+  }
+
+  .mainSwiss_field{
+    width: 156px;
+    min-height: 21px;
+  }
+
+  .mainSwiss_board_player_first{
+    margin-left: 45px;
+  }
+  .mainSwiss_board_player_second{
+    margin-right: 45px;
+  }
+}
+
+@media (max-width: 627px){
+  .warning_number_tours_flex{
+    display: block;
+  }
+}
+
+@media (max-width: 570px){
+  .mainSwiss_board_player_first{
+    margin-left: 0;
+  }
+  .mainSwiss_board_player_second{
+    margin-right: 0;
+  }
+}
+
+@media (max-width: 454px){
+  .warning_number_tours_flex{
+    width: 400px;
+  }
+
+  .maximum_number_tours{
+    position: absolute;
+
+    margin-top: 25px;
+    margin-left: 261px;
+  }
+}
+@media (max-width: 430px){
+  .maximum_number_tours{
+    margin-left: 63vw;
+  }
+}
+@media (max-width: 362px){
+  .maximum_number_tours{
+    margin-left: 64vw;
+  }
+}
+@media (max-width: 318px){
+  .maximum_number_tours{
+    margin-left: 81vw;
+  }
+}
+@media (max-width: 276px){
+  .maximum_number_tours{
+    margin-left: 85vw;
+  }
+}
+
+
+@media (max-width: 423px){
+  .mainSwiss_board_player_field{
+    font-size: 14px;
+  }
+  
+  .mainSwiss_not_render h1{
+    font-size: 14px;
+  }
+
+  .mainSwiss_user_photo{
+    width: 50px;
+  }
+
+  .mainSwiss_board_btn_victory, .mainSwiss_board_btn_draw{
+    font-size: 13px;
+    width: 64px;
+    height: 21px; 
+
+    padding: 0;
+  }
+}
+
+@media (max-height: 466px){
+  .mainSwiss_user_photo{
+    width: 100px;
+  }
+
+  .mainSwiss_field_three p{
+    font-size: 14px;
+  }
+
+  .mainSwiss_field_three h1{
+    font-size: 13px;
+  }
+  
+  .mainSwiss_field_two p{
+    font-size: 14px;
+  }
+
+  .mainSwiss_field_two h1{
+    font-size: 13px;
+  }
+
+  .mainSwiss_field{
+    width: 156px;
+    height: 21px;
+  }
+
+  .mainSwiss_board_player_first{
+    margin-left: 45px;
+  }
+  .mainSwiss_board_player_second{
+    margin-right: 45px;
+  }
+}
 
 
 @media (max-width: 862px){

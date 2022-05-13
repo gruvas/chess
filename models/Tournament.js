@@ -15,7 +15,7 @@ const schema = new Schema({
   tours_number: {type: Number}, // Количество туров
   time_tour: {type: Number}, // Время одной игры
   time_type_tour: {type: String}, // Тип времени
-  current_tour: {type: String, default: 0}, // Текущий тур
+  current_tour: {type: String, default: 1}, // Текущий тур
   place: {type: Array}, // Места занятые в турнире
 // (1 место занял ФИО (и так каждое место))
 // (пример массива:

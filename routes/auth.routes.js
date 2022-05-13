@@ -231,6 +231,21 @@ router.post('/type_game',
         }
     }
 )
+router.post('/current_tour',
+    async(req, res) => {
+        try{
+            console.log('Body: ', req.body)
+
+            const {id, current_tour} = req.body
+
+            await Tournament.updateOne({_id: id}, {current_tour: current_tour})
+
+            res.status(201).json({message: 'Tournament updated '})
+        }catch(e){
+            res.status(500).json({message: 'Что-то пошло не так, попробуйте снова'})
+        }
+    }
+)
 
 router.post('/main_characteristics',
     async(req, res) => {
@@ -350,10 +365,30 @@ router.post('/tournamentData_many',
 )
 
 
+router.post('/add_member',
+    async(req, res) => {
+        try{
+            console.log('Body: ', req.body)
+            let intermediate = Object.values(req.body)
+
+            Member.insertMany(intermediate)
+
+            res.status(201).json({message: 'Обновление'})
+        }catch(e){
+            res.status(500).json({message: 'Что-то пошло не так, попробуйте снова'})
+        }
+    }
+)
 
 
+// console.log('Body: ', req.body)
+// let intermediate = Object.values(req.body)
 
+// const {owner} = req.body[0]
 
+// await Member.deleteMany({owner})
+
+// Member.insertMany(intermediate)
 
 
 
@@ -450,23 +485,23 @@ router.post('/search_member',
 )
 
 
-router.post('/update_member',
-    async(req, res) => {
-        try{
-            console.log('Body: ', req.body)
+// router.post('/update_member',
+//     async(req, res) => {
+//         try{
+//             console.log('Body: ', req.body)
 
-            const {full_name, age} = req.body
+//             const {full_name, age} = req.body
 
-            await Member.updateMany({age: age}, {full_name: "Update request"}, function(err, result){
-                console.log(result);
-            });
+//             await Member.updateMany({age: age}, {full_name: "Update request"}, function(err, result){
+//                 console.log(result);
+//             });
 
-            res.status(201).json({message: 'Обновление'})
-        }catch(e){
-            res.status(500).json({message: 'Что-то пошло не так, попробуйте снова'})
-        }
-    }
-)
+//             res.status(201).json({message: 'Обновление'})
+//         }catch(e){
+//             res.status(500).json({message: 'Что-то пошло не так, попробуйте снова'})
+//         }
+//     }
+// )
 
 router.post('/delete_member',
     async(req, res) => {
