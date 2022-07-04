@@ -367,6 +367,7 @@ right: -28px;
 }
 .horizontal_menu_center p{
   text-align: center;
+  padding-top: 5px;
 }
 
 .burger_white{
@@ -402,7 +403,7 @@ right: -28px;
 
   background-size: 100%;
   background-repeat: no-repeat;
-  background-image: url("img/one_blur.jpg");
+  background-image: url("img/one.jpg");
 }
 
 .mode_selection_oneBtn{
@@ -426,7 +427,7 @@ right: -28px;
 
   background-size: 100%;
   background-repeat: no-repeat;
-  background-image: url("img/team_blur.jpg");
+  background-image: url("img/team.jpg");
 }
 
 .mode_selection_teamBtn{
@@ -486,6 +487,7 @@ right: -28px;
   background-image: url("img/one.jpg");
 }
 #slide_2{
+  /* display: none; */
   background-image: url("img/team.jpg");
 }
 
@@ -1273,6 +1275,45 @@ right: -28px;
   background-color: #cc3300;
 }
 
+.continue_tour_bt_history{
+  background: url("./img/scroll.svg");
+
+  width: 40px;
+  height: 12%;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  max-width: 325px;
+  right: 14%;
+  position: absolute;
+
+  margin-top: 5px;
+
+  color: #fff0;
+}
+
+.btn_history_text{
+  border: solid 1px;
+  border-radius: 15px;
+
+  opacity: 0;
+  transition: 0.5s opacity;
+
+  margin-left: -99px;
+
+  right: 14%;
+  position: absolute;
+
+  margin-top: 62px;
+  margin-right: 31px;
+  padding: 1px 10px;
+}
+
+
+
+
+
+
+
 .continue_tour_bt_missing{
   margin-bottom: 23px;
 }
@@ -1286,6 +1327,13 @@ right: -28px;
   margin-top: 9px;
 
   background-color: #ccc;
+}
+
+.main_container_continue_hr{
+  max-width: 1450px;
+  padding: 10 15px;
+  margin: 0 auto;
+  margin-top: 10px;
 }
 
 
@@ -1496,25 +1544,269 @@ right: -28px;
 }
 
 
+.tournament_data_title{
+  text-align: center;
+
+  margin-top: 10px;
+  margin-bottom: 12px;
+}
+
+.tournament_data_title p{
+  font-size: 21px;
+  font-weight: 100;
+
+  margin-right: 84px;
+  margin-bottom: 12px;
+
+  padding-top: 15px;
+}
+
+.tournament_data_title_type{
+  display: flex;
+  justify-content: space-around;
+}
+
+.tournament_score_element{
+  display: flex;
+  justify-content: space-around;
+}
+
+.tournament_score_element_middle{
+  align-items: center;
+  display: grid;
+
+  margin-top: 17px;
+}
+
+.tournament_score_element_right{
+  align-items: center;
+  display: grid;
+
+  margin-top: 17px;
+}
+
+.tournament_score_img{
+  height: 122px;
+  width: 142px;
+
+  margin-top: 31px;
+}
+
+.tournament_score_img_replacement{
+  height: 122px;
+  width: 142px;
+
+  padding-top: 74px;
+
+  font-weight: 100;
+}
+
+.tournament_score_element_header{
+  text-align: center;
+
+  color: #ccc;
+  font-size: 19px;
+  font-weight: 100;
+}
+
+.tournament_score_element_wdl{
+  display: flex;
+  justify-content: space-around;
+}
+
+.tournament_score_text{
+  font-size: 19px;
+
+  padding-top: 7px;
+  text-align: center;
+}
+
+.tournament_score_text_last{
+  margin-top: -14px;
+  padding-top: 0px;
+}
+
+.tournament_score_title{
+  padding-right: 84px;
+}
+
+
+
+
+
+.endless_line{
+  /* width: 1000%; */
+}
+.endless_line .tournament_score_title{
+  /* position: absolute; */
+}
+
+.overflow_x{
+  overflow-x: scroll;
+}
+
+.game_history_table th,td{
+  min-width: 25px;
+
+  text-align: center;
+}
+.game_history_table_2 th,td{
+  max-width: 125px;
+
+  text-align: center;
+}
+
+.game_history_table_2{
+  margin-top: 30px;
+}
+
+table {
+  border: 1px solid grey;
+}
+th {
+  border: 1px solid grey;
+}
+td {
+  border: 1px solid grey;
+}
+
+.gh_win{
+  background-color: #D2FBD0;
+}
+.gh_draw{
+  background-color: #ccc;
+}
+.gh_loss{
+  background-color: #FBD0D0;
+}
+.gh_yourself{
+  background-color: #000;
+}
+
+
+
+
+
+.past_tours{
+  margin-bottom: 10px;
+}
 
 
 
 
 
 
+@media (max-width: 1950px){
+  .continue_tour_bt_history{
+    right: 20%;
+  }
+  .btn_history_text{
+    right: 20.5%;
+  }
+}
+@media (max-width: 1800px){
+  .continue_tour_bt_history{
+    right: 17.5%;
+  }
+  .btn_history_text{
+    right: 18%;
+  }
+}
+@media (max-width: 1700px){
+  .continue_tour_bt_history{
+    right: 16%;
+  }
+  .btn_history_text{
+    right: 17%;
+  }
+}
+@media (max-width: 1500px){
+  .continue_tour_bt_history{
+    right: 12%;
+  }
+  .btn_history_text{
+    right: 12%;
+  }
+}
+@media (max-width: 1450px){
+  .continue_tour_bt_history{
+    right: 10%;
+  }
+  .btn_history_text{
+    right: 10%;
+  }
+}
+@media (max-width: 1400px){
+  .continue_tour_bt_history{
+    right: 9%;
+  }
+  .btn_history_text{
+    right: 9%;
+  }
+}
+@media (max-width: 1350px){
+  .continue_tour_bt_history{
+    right: 7%;
+  }
+  .btn_history_text{
+    right: 7%;
+  }
+}
+@media (max-width: 1280px){
+  .continue_tour_bt_history{
+    right: 5%;
+  }
+  .btn_history_text{
+    right: 5%;
+  }
+}
+@media (max-width: 1240px){
+  .continue_tour_bt_history{
+    right: 3%;
+  }
+  .btn_history_text{
+    right: 3%;
+  }
+}
 
+@media (max-width: 748px){
+  .continue_tour_bt_history{
+    width: 100%;
+    
+    display: block;
+    position: relative;
+    padding-top: 32px;
+    border: solid;
+    border-radius: 50px;
+    left: 0;
 
+    color: #000;
+    background: #FFCB7B;
 
+    padding: 9px 47px;
 
-
-
-
+    border: none;
+  }
+  .btn_history_text{
+    display: none;
+  }
+}
 
 
 
 @media (max-width: 1050px){
   .horizontal_menu_distributed p{
     font-size: 19px;
+  }
+}
+
+@media (max-width: 1050px){
+  .continue_tour_bt{
+    display: block ruby;
+  }
+
+  .continue_tour_organizer p{
+    display: block ruby;
   }
 }
 
@@ -1536,11 +1828,14 @@ right: -28px;
   }
 
   .continue_tour_bt{
+    display: block;
+
     margin: auto;
     width: 50%;
     padding: 10px;
   }
 }
+
 
 @media (max-width: 748px){
   .continue_tour_bt{
@@ -1639,38 +1934,7 @@ right: -28px;
   }
 }
 
-@media (max-width: 454px){
-  .warning_number_tours_flex{
-    width: 400px;
-  }
 
-  .maximum_number_tours{
-    position: absolute;
-
-    margin-top: 25px;
-    margin-left: 261px;
-  }
-}
-@media (max-width: 430px){
-  .maximum_number_tours{
-    margin-left: 63vw;
-  }
-}
-@media (max-width: 362px){
-  .maximum_number_tours{
-    margin-left: 64vw;
-  }
-}
-@media (max-width: 318px){
-  .maximum_number_tours{
-    margin-left: 81vw;
-  }
-}
-@media (max-width: 276px){
-  .maximum_number_tours{
-    margin-left: 85vw;
-  }
-}
 
 
 @media (max-width: 423px){
@@ -2031,3 +2295,82 @@ right: -28px;
 }
 
 
+
+
+@media (max-width: 855px){
+  .tournament_score_title{
+    padding-right: 0px;
+  }
+
+  .tournament_data_title p{
+    margin-right: 0px;
+  }
+
+  .tournament_data_title_type {
+    display: block;
+  }
+}
+
+
+@media (max-width: 683px){
+  .tournament_score_element{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 9em;
+  }
+
+  .tournament_score_text_last{
+    margin-top: 0px;
+    
+    padding-top: 4px;
+  }
+
+  .tournament_element_header_indent{
+    margin-top: -13px;
+  }
+
+  .tournament_score_img_replacement{
+    height: 100%;
+    width: 100%;
+  
+    padding-top: 13px;
+    padding-left: 15px;
+  
+    font-size: 28px;
+    font-weight: 100;
+  }
+
+  .tournament_score_title{
+    padding-right: 0px;
+  }
+
+  .tournament_score_block_img{
+    margin-bottom: -11px;
+  }
+
+  .tournament_score_element_header{
+    font-size: 16px;
+  }
+
+  .tournament_score_text {
+    font-size: 16px;
+  }
+
+  .tournament_element_indent_width{
+    width: 255px;
+    margin-left: -54px;
+  }
+
+  .tournament_element_header_indent{
+    margin-left: -44px;
+  }
+}
+
+
+
+@media (max-width: 365px){
+  /* .tournament_data_title{
+    padding-top: 38px;
+  } */
+}

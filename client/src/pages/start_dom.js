@@ -62,14 +62,14 @@ export const StartPage = () => {
                 <div className="sidebar">
                     <div style={{backgroundColor: "#000"}}>
                     <h1 className="startH startH_exception">Игра на выбывание</h1>
-                            <button className="startBt startBt_exception" onClick={typeException}>
-                                Начать
+                            <button className="startBt startBt_exception" onClick={typeException} disabled>
+                                В разработке
                             </button>
                     </div>
                     <div style={{backgroundColor: "#0B1922"}}>
                     <h1 className="startH startH_circle">Жеребьевка по<br></br> круговой системе</h1>
-                            <button className="startBt startBt_circle" onClick={typeCircle}>
-                                Начать
+                            <button className="startBt startBt_circle" onClick={typeCircle} disabled>
+                                В разработке
                             </button>
                     </div>
                     <div style={{backgroundColor: "#FFCB7B"}}>

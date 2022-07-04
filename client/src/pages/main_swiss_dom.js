@@ -1,10 +1,21 @@
 import ReactDOM from "react-dom"
-import {NavLink} from 'react-router-dom'
 import { useHttp } from '../hooks/http.hook'
 
 import user_photo from "../img/user.png"
 
-const mongoose = require('mongoose')
+
+let round_current = 0
+let not_render = 0
+let validation_variable = 0
+let counter_not_render = 1
+let who_won = []
+let copy_member_data = []
+let array_vector = []
+let intermediate_index = []
+let color_distribution_coefficient = []
+let first_iteration = true
+let check_cycle = false
+let member_data, tournament_data, redundant_array
 
 
 
@@ -109,7 +120,7 @@ function round_generation(arr_members){
                             <button className='mainSwiss_board_btn_victory' id={`mainSwiss_board_btn_victory${i}`}>
                                 Победил
                             </button>
-                            <button className='mainSwiss_board_btn_draw active' id={`mainSwiss_board_btn_draw${i}`}>
+                            <button className='mainSwiss_board_btn_draw' id={`mainSwiss_board_btn_draw${i}`}>
                                 Ничья
                             </button>
                             <button className='mainSwiss_board_btn_victory' id={`mainSwiss_board_btn_victory${i+1}`}>
@@ -216,7 +227,7 @@ function round_generation(arr_members){
                                     <button className='mainSwiss_board_btn_victory' id={`mainSwiss_board_btn_victory${i}`}>
                                         Победил
                                     </button>
-                                    <button className='mainSwiss_board_btn_draw active' id={`mainSwiss_board_btn_draw${i}`}>
+                                    <button className='mainSwiss_board_btn_draw' id={`mainSwiss_board_btn_draw${i}`}>
                                         Ничья
                                     </button>
                                     <button className='mainSwiss_board_btn_victory' id={`mainSwiss_board_btn_victory${i+1}`}>
@@ -323,86 +334,7 @@ function regular_btn_id(line){
     return(obj)
 }
 
-let copy_member_data = []
 
-function array_sorting(){
-    let member_id
-    let intermediate
-
-    not_render = 0
-    copy_member_data = []
-
-    for(let ii = 0; ii < member_data.length; ii++){
-        for(let i = 0; i < member_data.length; i++){
-            if(i+1 != member_data.length){
-                if(member_data[i].score < member_data[i+1].score){
-                    intermediate = member_data[i]
-                    member_data[i] = member_data[i+1]
-                    member_data[i+1] = intermediate
-                }
-            }
-        }
-    }
-
-    for(let i = 0; i < member_data.length; i = i + 2){
-        member_id = i + 1
-
-        for(let ii = 0; ii < member_data[i].rivals.length; ii++){
-            if(member_id != member_data.length){
-                do{
-                    if(member_data[i].rivals[ii].id_player == member_data[member_id].player_number){
-                        ii = 0
-                        member_id++
-                    }else{
-                        ii++
-                    }
-                }while(ii < member_data[i].rivals.length && member_id != member_data.length && member_id != member_data.length - 1)
-            }
-
-            if(member_id != member_data.length){
-                intermediate = member_data[i + 1]
-                member_data[i + 1] = member_data[member_id]
-                member_data[member_id] = intermediate
-            }
-        }
-
-        if(i+1 < member_data.length){
-            for(let j = 0; j < member_data[i].rivals.length; j++){
-                if(member_data[i].rivals[j].id_player == member_data[i+1].player_number){
-                    member_data[i].not_render = true
-                    not_render++
-                    member_data[i+1].not_render = true
-                    not_render++
-                }
-            }
-        }
-    }
-
-    for(let i = 0; i < member_data.length; i++){
-        if(member_data[i].not_render == true){
-            copy_member_data.push(member_data[i])
-            member_data.splice(i, 1)
-            i = 0
-        }
-    }
-
-    for(let i = 0; i < copy_member_data.length; i++){
-        copy_member_data[i].number_wins++
-
-        copy_member_data[i].rivals.push({
-            round: tournament_data.current_tour,
-            result: 'rest'
-        }) 
-    }
-    // console.log('copy_member_data', copy_member_data)
-    
-    // console.log('-----')
-    // console.log(member_data)
-    // console.log('-----')
-}
-
-let not_render = 0
-let member_data, tournament_data
 
 export const MainSwiss = () => {
     const {request} = useHttp()
@@ -437,6 +369,12 @@ export const MainSwiss = () => {
         } catch (e) {}
     }
 
+    const statusUpdate = async (finished_tournament_intermediate) => {
+        try {
+            await request('/api/auth/status_update', 'POST', {...finished_tournament_intermediate})
+        } catch (e) {}
+    }
+
     async function launch_draw(tournament_id){
         await memberData(tournament_id)
         await tournamentData(tournament_id)
@@ -452,269 +390,73 @@ export const MainSwiss = () => {
         document.querySelector('.mainSwiss_number_text').textContent = `${tournament_data.current_tour} тур`
     }
 
-
-    let who_won = []
-
     window.onload = async function() {
         let tournament_id = localStorage.getItem('tournament_id')
 
         await launch_draw(tournament_id)
+        round_current = tournament_data.current_tour
+
+        if(round_current == 1){
+            document.querySelector('.link_login_game_history').classList.add('hide')
+            document.querySelector('.link_login_leader_board').classList.add('hide')
+        }
+
+        if(tournament_data.tours_number < tournament_data.current_tour){
+            tournament_data.finished_tournament = true
+
+            let finished_tournament_intermediate = {
+                id: member_data[0].owner,
+                finished_tournament: tournament_data.finished_tournament
+            }
+
+            await statusUpdate(finished_tournament_intermediate)
+            
+            alert("Данный турнир завершен. Сейчас вас переправит на страницу лидеров.");
+            
+            window.location.href = 'leader_board'
+        }        
 
         document.querySelector('.burger_type_game').textContent = `${tournament_data.type_tournament} система`
 
-        if(tournament_data.current_tour == 1){
-            for(let i = 0; i < member_data.length; i++){
-                if(i%2 == 0){
-                    member_data[i].color = 'Ч'
-                }else{
-                    member_data[i].color = 'Б'
-                }
-            }
-            console.log(member_data)
-        }else{
-            await array_sorting()
+        await start()
 
-            let cpy_member_data
-            let cpy_member_data_length
-            let cpy_not_render
-            let cpy_not_render_counter
-            let cpy_not_render_check = 0 
-                
-            if(not_render != 0){
-                cpy_not_render_counter = JSON.parse(JSON.stringify(not_render))
-
-                for(let i = 0; i < copy_member_data.length; i++){
-                    copy_member_data[i].not_render = false
-                    member_data.push(copy_member_data[i])
-                }
-    
-                copy_member_data = []
-                cpy_member_data = JSON.parse(JSON.stringify(member_data))
-                cpy_member_data_length = cpy_member_data.length
-            }
-
-            async function recursion(){
-                if(not_render != 0){
-                    member_data = JSON.parse(JSON.stringify(cpy_member_data))
-
-                    for(let j = 0; j < cpy_member_data_length; j++){
-                        if(not_render != 0){
-                            member_data = JSON.parse(JSON.stringify(cpy_member_data))
-
-                            for(let i = 0; i < cpy_member_data_length; i++){
-                                if(i>j){
-                                    if(not_render == 0){
-                                        console.log('1', JSON.parse(JSON.stringify(member_data)))
-                                    }
-
-                                    if(not_render != 0){
-                                        member_data = JSON.parse(JSON.stringify(cpy_member_data))
-
-                                        member_data[i].rivals.push({
-                                            id_player: member_data[j].player_number
-                                        }) 
-                                        member_data[j].rivals.push({
-                                            id_player: member_data[i].player_number
-                                        }) 
-                        
-                                        await array_sorting()
-
-                                        if(cpy_not_render_counter > not_render){
-                                            cpy_not_render_check = 1
-                                            cpy_not_render = JSON.parse(JSON.stringify(member_data))
-                                            cpy_not_render_counter = JSON.parse(JSON.stringify(not_render))
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-
-                if(cpy_not_render_counter < not_render && cpy_not_render_check == 1){
-                    console.log(cpy_not_render)
-                    console.log(cpy_not_render_counter)
-                }
-            }
-
-            await recursion()
-        }
-
+        await color_distribution()
+        
+        await end_round()
 
         await round_generation(member_data)
 
-        if(member_data.length % 2 == 0){
-            for(let i = 0; i < member_data.length; i = i + 2){
-                let btn_win1 = document.querySelector(`#mainSwiss_board_btn_victory${i}`)
-                let btn_win2 = document.querySelector(`#mainSwiss_board_btn_victory${i+1}`)
-                let btn_draw = document.querySelector(`#mainSwiss_board_btn_draw${i}`)
-                
+        await active_buttons()
 
-                btn_win1.addEventListener('click', function(){
-                    btn_win1.classList.add('active')
-                    btn_win2.classList.remove('active')
-                    btn_draw.classList.remove('active')
-                })
-                btn_win2.addEventListener('click', function(){
-                    btn_win1.classList.remove('active')
-                    btn_win2.classList.add('active')
-                    btn_draw.classList.remove('active')
-                })
-                btn_draw.addEventListener('click', function(){
-                    btn_win2.classList.remove('active')
-                    btn_win1.classList.remove('active')
-                    btn_draw.classList.add('active')
-                })
-            }
-        }else{
-            for(let i = 0; i < member_data.length - 1; i = i + 2){
-                let btn_win1 = document.querySelector(`#mainSwiss_board_btn_victory${i}`)
-                let btn_win2 = document.querySelector(`#mainSwiss_board_btn_victory${i+1}`)
-                let btn_draw = document.querySelector(`#mainSwiss_board_btn_draw${i}`)
-                
-
-                btn_win1.addEventListener('click', function(){
-                    btn_win1.classList.add('active')
-                    btn_win2.classList.remove('active')
-                    btn_draw.classList.remove('active')
-
-                })
-                btn_win2.addEventListener('click', function(){
-                    btn_win1.classList.remove('active')
-                    btn_win2.classList.add('active')
-                    btn_draw.classList.remove('active')
-                })
-                btn_draw.addEventListener('click', function(){
-                    btn_win2.classList.remove('active')
-                    btn_win1.classList.remove('active')
-                    btn_draw.classList.add('active')
-                })
-            }
-
-            member_data[member_data.length - 1].number_wins++
-
-            member_data[member_data.length - 1].rivals.push({
-                round: tournament_data.current_tour,
-                result: 'rest'
-            }) 
-        }
 
         let start_round = document.querySelector('.mainSwiss_start_round')
+            
 
         start_round.addEventListener('click', async function(){
             let btn_active = document.querySelectorAll('.active')
-
-           if(btn_active.length < ((member_data.length / 2) - (not_render / 2))){
+            
+            if((member_data.length%2 == 0) && (btn_active.length < ((member_data.length / 2) - (not_render / 2)))){
+                window.alert("Необходимо выбрать результат игры у каждой доски")
+            }else if((member_data.length%2 != 0) && (btn_active.length < ((member_data.length / 2) - (not_render / 2)) - 1)){
                 window.alert("Необходимо выбрать результат игры у каждой доски")
             }else{
-                for(let i = 0; i < member_data.length / 2; i++){
-                    let btn_active_reg = regular_btn_id(btn_active[i].id)
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                
+                await btn_result()
+                await tour_results()
 
-                    if(btn_active_reg.let == 'mainSwiss_board_btn_draw'){
-                        if(btn_active_reg.num == 0){
-                            member_data[0].number_draws++
-                            member_data[1].number_draws++
-
-                            member_data[0].score = member_data[0].score + 0.5
-                            member_data[1].score = member_data[1].score + 0.5
-                        }else{
-                            member_data[parseInt(btn_active_reg.num)].number_draws++
-                            member_data[parseInt(btn_active_reg.num) + 1].number_draws++
-
-                            member_data[parseInt(btn_active_reg.num)].score = member_data[parseInt(btn_active_reg.num)].score + 0.5
-                            member_data[parseInt(btn_active_reg.num) + 1].score = member_data[parseInt(btn_active_reg.num) + 1].score + 0.5
-                        }
-
-                        who_won.push('draw')
+                if(member_data.length%2 == 0){
+                    for(let i = 0; i < member_data.length; i = i + 2){
+                        delete member_data[i].color
+                        delete member_data[i+1].color
                     }
-                    if(btn_active_reg.let == 'mainSwiss_board_btn_victory'){
-                        if(btn_active_reg.num % 2 == 0){
-                            member_data[parseInt(btn_active_reg.num)].number_wins++
-                            member_data[parseInt(btn_active_reg.num) + 1].number_lesions++
-
-                            member_data[parseInt(btn_active_reg.num)].score++
-
-                            who_won.push('victory1')
-                        }
-
-                        if(btn_active_reg.num % 2 != 0){
-                            member_data[parseInt(btn_active_reg.num) - 1].number_lesions++
-                            member_data[parseInt(btn_active_reg.num)].number_wins++
-                            
-                            member_data[parseInt(btn_active_reg.num)].score++
-
-                            who_won.push('victory2')
+                }else{
+                    for(let i = 0; i < member_data.length; i = i + 2){
+                        if((member_data.length - 1) != i){
+                            delete member_data[i].color
+                            delete member_data[i+1].color
                         }
                     }
-                }
-
-                let who_won_counter = 0
-
-                for(let i = 0; i < member_data.length; i = i + 2){
-                    let color_1 = document.querySelector(`#mainSwiss_color${i}`).textContent
-                    let color_2 = document.querySelector(`#mainSwiss_color${i+1}`).textContent
-                    
-                    if(color_1 == 'Б'){
-                        member_data[i].color_coef++
-                    }
-                    
-                    if(color_2 == 'Б'){
-                        member_data[i+1].color_coef++
-                    }
-
-                    if(who_won[who_won_counter] == 'draw'){
-                        member_data[i].rivals.push({
-                            round: tournament_data.current_tour,
-                            id_player: member_data[i+1].player_number,
-                            color: color_2,
-                            result: 'draw'
-                        }) 
-                        member_data[i+1].rivals.push({
-                            round: tournament_data.current_tour,
-                            id_player: member_data[i].player_number,
-                            color: color_1,
-                            result: 'draw'
-                        })
-                    }
-                    if(who_won[who_won_counter] == 'victory1'){
-                        member_data[i].rivals.push({
-                            round: tournament_data.current_tour,
-                            id_player: member_data[i+1].player_number,
-                            color: color_2,
-                            result: 'win'
-                        }) 
-                        member_data[i+1].rivals.push({
-                            round: tournament_data.current_tour,
-                            id_player: member_data[i].player_number,
-                            color: color_1,
-                            result: 'loss'
-                        })
-                    }
-
-                    // console.log(i)
-                    console.log(who_won[who_won_counter])
-
-                    if(who_won[who_won_counter] == 'victory2'){
-                        member_data[i].rivals.push({
-                            round: tournament_data.current_tour,
-                            id_player: member_data[i+1].player_number,
-                            color: color_2,
-                            result: 'loss'
-                        }) 
-                        member_data[i+1].rivals.push({
-                            round: tournament_data.current_tour,
-                            id_player: member_data[i].player_number,
-                            color: color_1,
-                            result: 'win'
-                        })
-                    }
-
-                    who_won_counter++
-                }
-
-                for(let i = 0; i < member_data.length; i = i + 2){
-                    delete member_data[i].color
-                    delete member_data[i+1].color
                 }
 
                 let tour_id = member_data[0].owner
@@ -728,13 +470,12 @@ export const MainSwiss = () => {
     
                 console.log('-----')
                 console.log(member_data)
-                console.log('-----')
-    
+                console.log('-----') 
     
                 await currentTour(current_tour)
     
                 await memberDelete(tour_id)
-                await memberAdd(member_data)
+                await memberAdd(member_data)                
     
                 window.location.reload()
             }
@@ -751,6 +492,12 @@ export const MainSwiss = () => {
                             <p className="burger_type_game">Тип жеребьевки</p>
                             <a href="personal_area" className="link_login">
                                 <li>Личный кабинет</li>
+                            </a>
+                            <a href="game_history" className="link_login link_login_game_history">
+                                <li>История турнира</li>
+                            </a>
+                            <a href="leader_board" className="link_login link_login_leader_board">
+                                <li>Таблица лидеров</li>
                             </a>
                     </ul>
                 </nav>
@@ -784,3 +531,683 @@ export const MainSwiss = () => {
     )
 }
 
+
+
+async function start(){
+    console.log('Start')
+    console.log(`Round ${round_current}`)
+
+    await sorting_points()
+    await sort_arr()
+    console.log(JSON.parse(JSON.stringify(member_data)))
+}
+
+function sorting_points(){
+    let intermediate
+
+    for(let ii = 0; ii < member_data.length; ii++){
+        for(let i = 0; i < member_data.length; i++){
+            if(i + 1 != member_data.length){
+                if(member_data[i].score < member_data[i+1].score){
+                    intermediate = member_data[i]
+                    member_data[i] = member_data[i+1]
+                    member_data[i+1] = intermediate
+                }
+            }
+        }
+    }
+}
+
+function verification_member_data(){
+    for(let i = 0; i < member_data.length; i = i + 2){
+        for(let ii = 0; ii < member_data[i].rivals.length; ii++){
+            if(member_data.length%2 == 0){
+                if(round_current > 2){
+                    if((member_data[i].rivals[member_data[i].rivals.length - 1].color == member_data[i].rivals[member_data[i].rivals.length - 2].color) &&
+                    (member_data[i+1].rivals[member_data[i+1].rivals.length - 1].color == member_data[i+1].rivals[member_data[i+1].rivals.length - 1].color) && 
+                    (member_data[i].rivals[member_data[i].rivals.length - 1].color == member_data[i+1].rivals[member_data[i+1].rivals.length - 1].color)){
+        
+                        return false
+                    }
+                }
+
+                if(member_data[i].rivals[ii].id_player == member_data[i+1].player_number){
+                    return false
+                }
+            }
+            
+            if(member_data.length%2 != 0 && i != (member_data.length - 1)){
+                if(round_current > 2){
+                    if((member_data[i].rivals[member_data[i].rivals.length - 1].color == member_data[i].rivals[member_data[i].rivals.length - 2].color) &&
+                    (member_data[i+1].rivals[member_data[i+1].rivals.length - 1].color == member_data[i+1].rivals[member_data[i+1].rivals.length - 1].color) && 
+                    (member_data[i].rivals[member_data[i].rivals.length - 1].color == member_data[i+1].rivals[member_data[i+1].rivals.length - 1].color)){
+
+                        return false
+                    }
+                }  
+                
+                
+                if(member_data[i].rivals[ii].id_player == member_data[i+1].player_number){
+                    return false
+                }
+            }
+        }
+    }
+
+    return true
+}
+
+function sort_arr(){
+    let member_id, intermediate
+    sorting_points()
+
+    redundant_array = JSON.parse(JSON.stringify(member_data))
+
+    for(let i = 0; i < member_data.length; i = i + 2){
+        member_id = i + 1
+
+        for(let ii = 0; ii < member_data[i].rivals.length; ii++){
+            if(member_id != member_data.length){
+                do{
+                    if(member_data[i].rivals[ii].id_player == member_data[member_id].player_number){
+                        ii = 0
+                        member_id++
+                    }else{
+                        ii++
+                    }
+                }while(ii < member_data[i].rivals.length && member_id != member_data.length)
+                
+                check_cycle = false
+            }
+
+            if(member_id != member_data.length){
+                intermediate = member_data[i + 1]
+                member_data[i + 1] = member_data[member_id]
+                member_data[member_id] = intermediate
+            }
+        }
+
+        if(i+1 < member_data.length){
+            for(let j = 0; j < member_data[i].rivals.length; j++){
+                if(member_data[i].rivals[j].id_player == member_data[i+1].player_number){
+                    member_data[i].not_render = true
+                    not_render++
+                    member_data[i+1].not_render = true
+                    not_render++
+                }
+                else if(member_data.length%2 == 0){
+                    if(round_current > 2){
+                        if((member_data[i].rivals[member_data[i].rivals.length - 1].color == member_data[i].rivals[member_data[i].rivals.length - 2].color) &&
+                        (member_data[i+1].rivals[member_data[i].rivals.length - 1].color == member_data[i+1].rivals[member_data[i].rivals.length - 1].color) &&
+                        (member_data[i].rivals[member_data[i].rivals.length - 1].color == member_data[i+1].rivals[member_data[i].rivals.length - 1].color)){
+
+                            member_data[i].not_render = true
+                            not_render++
+                            member_data[i+1].not_render = true
+                            not_render++
+                        }
+                    }
+                }else if(member_data.length%2 != 0 && i != (member_data.length - 1)){
+                    if(round_current > 2){
+                        if((member_data[i].rivals[member_data[i].rivals.length - 1].color == member_data[i].rivals[member_data[i].rivals.length - 2].color) &&
+                        (member_data[i+1].rivals[member_data[i].rivals.length - 1].color == member_data[i+1].rivals[member_data[i].rivals.length - 1].color) &&
+                        (member_data[i].rivals[member_data[i].rivals.length - 1].color == member_data[i+1].rivals[member_data[i].rivals.length - 1].color)){
+    
+                            member_data[i].not_render = true
+                            not_render++
+                            member_data[i+1].not_render = true
+                            not_render++
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    if(not_render > 1 && validation_variable < 1){
+        array_vector = []
+        intermediate_index = []
+
+        let intermediate = []
+        let array_vector_intermediate = []
+        let intermediate_arr = []
+        let index
+
+        member_data = JSON.parse(JSON.stringify(redundant_array))
+
+
+        if(first_iteration){
+
+            for(let i = 1; i < member_data.length + 1; i++){
+                array_vector.push(i)
+            }
+
+            for(let i = 0; i < member_data.length; i++){
+                intermediate_arr.push(member_data[i].rivals)
+            }
+
+            for(let i = 0; i < member_data.length; i++){
+                array_vector_intermediate = JSON.parse(JSON.stringify(array_vector))
+
+                for(let ii = 0; ii < member_data[i].rivals.length; ii++){
+                    let index = array_vector.indexOf(member_data[i].rivals[ii].id_player)
+                    delete array_vector_intermediate[index]
+                }
+
+                array_vector_intermediate = array_vector_intermediate.filter(function (el) {
+                    return (el != null && el != "" || el === 0);
+                });
+
+                intermediate_index.push({id: member_data[i].player_number, arr: array_vector_intermediate})
+            }
+                
+            for(let i = 0; i < member_data.length; i++){
+                for(let ii = 0; ii < member_data.length; ii++){
+
+                    for(let iii = 0; iii < member_data.length; iii++){
+                        
+                        for(let j = 0; j < intermediate_index.length; j++){
+                            for(let jj = 0; jj < intermediate_index[j].arr.length; jj++){
+
+                                for(let ind = 0; ind < member_data.length; ind++){
+                                    if(member_data[ind].player_number == intermediate_index[j].arr[jj]){
+                                        ind = member_data.length
+                                        index = intermediate_index[j].arr[jj] - 1
+                                    }
+                                }
+                                
+                                intermediate =  member_data[0]
+                                member_data[0] = member_data[(intermediate_index[j].id - 1)]
+                                member_data[(intermediate_index[j].id - 1)] = intermediate
+
+                                intermediate =  member_data[1]
+                                member_data[1] = member_data[index]
+                                member_data[index] = intermediate
+
+                                if(verification_member_data()){
+                                    console.log('good')
+
+                                    i = ii = iii = member_data.length
+                                    jj = intermediate_index[j].arr.length
+                                    j = intermediate_index.length
+
+                                    not_render = 0
+
+                                    console.log(JSON.parse(JSON.stringify(member_data)))
+
+                                    break
+                                }                                
+                            }
+                        }
+                    }
+                }
+            }
+
+
+            first_iteration = false
+        }
+
+
+        intermediate = []
+        intermediate_arr = []
+        validation_variable++
+    }
+
+    if(not_render > 1 && validation_variable < 5){
+        member_data = JSON.parse(JSON.stringify(redundant_array))
+
+console.log(13)
+
+        not_render = 0 
+        validation_variable++
+
+        intermediate =  member_data[0]
+        member_data[0] = member_data[member_data.length-1]
+        member_data[member_data.length-1] = intermediate
+
+        intermediate =  member_data[1]
+        member_data[1] = member_data[member_data.length-2]
+        member_data[member_data.length-2] = intermediate
+
+        sort_arr()
+    }
+    else if(not_render > 1 && validation_variable < 10){
+        member_data = JSON.parse(JSON.stringify(redundant_array))
+
+console.log(31)
+
+        not_render = 0 
+        validation_variable++
+
+        intermediate =  member_data[0]
+        member_data[0] = member_data[member_data.length-1]
+        member_data[member_data.length-1] = intermediate
+
+        intermediate =  member_data[1]
+        member_data[1] = member_data[member_data.length-2]
+        member_data[member_data.length-2] = intermediate
+        
+        intermediate =  member_data[3]
+        member_data[3] = member_data[member_data.length-3]
+        member_data[member_data.length-3] = intermediate
+
+        intermediate =  member_data[4]
+        member_data[4] = member_data[member_data.length-4]
+        member_data[member_data.length-4] = intermediate
+
+        sort_arr()
+    }
+    else if(not_render > 1 && validation_variable < 15){
+        member_data = JSON.parse(JSON.stringify(redundant_array))
+
+console.log(133)
+
+        not_render = 0 
+        validation_variable++
+
+        let middle = Math.round(member_data.length/2)
+
+        intermediate =  member_data[0]
+        member_data[0] = member_data[middle]
+        member_data[middle] = intermediate
+
+        intermediate =  member_data[middle+1]
+        member_data[middle+1] = member_data[member_data.length-1]
+        member_data[member_data.length-1] = intermediate
+        
+        sort_arr()
+    }
+    else if(not_render > 1 && validation_variable < 20){
+        member_data = JSON.parse(JSON.stringify(redundant_array))
+
+console.log(311)
+
+        not_render = 0 
+        validation_variable++
+
+        
+        for(let ii = 0; ii < member_data.length/2; ii++){
+            let random = Math.round(0 + Math.random() * ((member_data.length-1)-0))
+            let random1 = Math.round(0 + Math.random() * ((member_data.length-1)-0))
+
+            intermediate =  member_data[random]
+            member_data[random] = member_data[random1]
+            member_data[random1] = intermediate
+        }
+
+        sort_arr()
+    }
+    else if(not_render > 1 && validation_variable < 30){
+        member_data = JSON.parse(JSON.stringify(redundant_array))
+
+console.log(3111)
+
+        not_render = 0 
+        validation_variable++
+
+        let random = Math.round(0 + Math.random() * ((member_data.length-1)-0))
+
+        intermediate =  member_data[0]
+        member_data[0] = member_data[random]
+        member_data[random] = intermediate
+
+        sort_arr()
+    }
+}
+
+function end_round(){
+    validation_variable = 0
+    counter_not_render = 1
+    first_iteration = true
+    copy_member_data = []
+
+    for(let i = 0; i < member_data.length; i++){
+        if(member_data[i].not_render == true){
+            copy_member_data.push(member_data[i])
+            member_data[i].score++
+            // member_data.splice(i, 1)
+            // i = 0
+        }
+    }
+
+   for(let i = 0; i < copy_member_data.length; i++){
+        copy_member_data[i].score++
+
+        copy_member_data[i].rivals.push({
+            round: round_current,
+            result: 'rest'
+        }) 
+    }
+
+    if(copy_member_data.length > 1){
+        console.log('Количество пользователей без пары: ', JSON.parse(JSON.stringify(copy_member_data.length)))
+        console.log('Пользователи без пары: ', JSON.parse(JSON.stringify(copy_member_data)))
+    }
+
+    // if(copy_member_data.length > 0){
+    //     for(let i = 0; i < copy_member_data.length; i++){
+    //         member_data.push(copy_member_data[i])
+    //     }
+    // }
+}
+
+
+function tour_results(){
+    let who_won_counter = 0
+
+    for(let i = 0; i < member_data.length; i = i + 2){
+        if(who_won[who_won_counter] == 'draw'){
+            member_data[i].score = member_data[i].score + 0.5
+            member_data[i+1].score = member_data[i+1].score + 0.5
+
+            member_data[i].rivals.push({
+                round: round_current,
+                id_player: member_data[i+1].player_number,
+                color: color_distribution_coefficient[i],
+                result: 'draw'
+            }) 
+            member_data[i+1].rivals.push({
+                round: round_current,
+                id_player: member_data[i].player_number,
+                color: color_distribution_coefficient[i+1],
+                result: 'draw'
+            })
+        }
+
+        if(who_won[who_won_counter] == 'victory1'){
+            member_data[i].score = member_data[i].score + 1
+
+            member_data[i].rivals.push({
+                round: round_current,
+                id_player: member_data[i+1].player_number,
+                color: color_distribution_coefficient[i],
+                result: 'win'
+            }) 
+            member_data[i+1].rivals.push({
+                round: round_current,
+                id_player: member_data[i].player_number,
+                color: color_distribution_coefficient[i+1],
+                result: 'loss'
+            })
+        }
+
+        if(who_won[who_won_counter] == 'victory2'){
+            member_data[i+1].score = member_data[i+1].score + 1
+
+            member_data[i].rivals.push({
+                round: round_current,
+                id_player: member_data[i+1].player_number,
+                color: color_distribution_coefficient[i],
+                result: 'loss'
+            }) 
+            member_data[i+1].rivals.push({
+                round: round_current,
+                id_player: member_data[i].player_number,
+                color: color_distribution_coefficient[i+1],
+                result: 'win'
+            })
+        }
+
+        if(who_won[who_won_counter] == 'rest'){
+            member_data[i].score = member_data[i].score + 1
+
+            member_data[i].rivals.push({
+                round: round_current,
+                result: 'rest'
+            })
+        }
+
+        who_won_counter++
+    }
+}
+
+
+function btn_result(){
+    who_won = []
+
+    let btn_active = document.querySelectorAll('.active')
+
+    if(member_data.length%2 == 0){
+        for(let i = 0; i < member_data.length / 2; i++){
+    
+            let btn_active_reg = regular_btn_id(btn_active[i].id)
+    
+            if(btn_active_reg.let == 'mainSwiss_board_btn_draw'){
+                who_won.push('draw')
+            }
+            if(btn_active_reg.let == 'mainSwiss_board_btn_victory'){
+                if(btn_active_reg.num % 2 == 0){
+                    who_won.push('victory1')
+                }
+    
+                if(btn_active_reg.num % 2 != 0){
+                    who_won.push('victory2')
+                }
+            }
+        }
+    }else{
+        for(let i = 0; i < Math.round(member_data.length / 2); i++){
+            // console.log(i)
+            // console.log(btn_active)
+    
+            if(Math.round(member_data.length/2 - 1) != i){
+                let btn_active_reg = regular_btn_id(btn_active[i].id)
+        
+                if(btn_active_reg.let == 'mainSwiss_board_btn_draw'){
+                    who_won.push('draw')
+                }
+                if(btn_active_reg.let == 'mainSwiss_board_btn_victory'){
+                    if(btn_active_reg.num % 2 == 0){
+                        who_won.push('victory1')
+                    }
+        
+                    if(btn_active_reg.num % 2 != 0){
+                        who_won.push('victory2')
+                    }
+                }
+            } else if((Math.round(member_data.length/2 - 1)) == i) {
+                who_won.push('rest') 
+            }
+        }
+    }
+}
+
+function color_distribution(){
+    let random
+    color_distribution_coefficient = []
+
+    if(member_data.length%2 == 0){
+        if(round_current > 2){
+            for(let i = 0; i < member_data.length; i = i + 2){
+                if((member_data[i].rivals[member_data[i].rivals.length - 1].color == 'Б') &&
+                (member_data[i].rivals[member_data[i].rivals.length - 2].color == 'Б')){
+                    member_data[i].color = 'Ч'
+                    member_data[i+1].color = 'Б'
+                    color_distribution_coefficient.push('Ч', 'Б')
+                }
+                else if((member_data[i].rivals[member_data[i].rivals.length - 1].color == 'Ч') &&
+                (member_data[i].rivals[member_data[i].rivals.length - 2].color == 'Ч')){
+                    member_data[i].color = 'Б'
+                    member_data[i+1].color = 'Ч'
+                    color_distribution_coefficient.push('Б', 'Ч')
+                }
+                else if((member_data[i+1].rivals[member_data[i+1].rivals.length - 1].color == 'Б') &&
+                (member_data[i+1].rivals[member_data[i+1].rivals.length - 2].color == 'Б')){
+                    member_data[i].color = 'Б'
+                    member_data[i+1].color = 'ч'
+                    color_distribution_coefficient.push('Б', 'Ч')
+                }
+                else if((member_data[i+1].rivals[member_data[i+1].rivals.length - 1].color == 'Ч') &&
+                (member_data[i+1].rivals[member_data[i+1].rivals.length - 2].color == 'Ч')){
+                    member_data[i].color = 'Ч'
+                    member_data[i+1].color = 'Б'
+                    color_distribution_coefficient.push('Ч', 'Б')
+                }else{
+                    let score1, score2
+
+                    for(let ii = 0; ii < member_data[i].rivals.length; ii++){
+                        if(member_data[i].rivals[ii].color == 'Б'){
+                            score1++
+                        }
+                    }
+
+                    for(let ii = 0; ii < member_data[i+1].rivals.length; ii++){
+                        if(member_data[i+1].rivals[ii].color == 'Б'){
+                            score2++
+                        }
+                    }
+
+                    if(score1 > score2){
+                        member_data[i].color = 'Ч'
+                        member_data[i+1].color = 'Б'
+                        color_distribution_coefficient.push('Ч', 'Б')
+                    }else{
+                        member_data[i].color = 'Б'
+                        member_data[i+1].color = 'Ч'
+                        color_distribution_coefficient.push('Б', 'Ч')
+                    }
+                }
+            }
+        }else{
+            for(let i = 0; i < member_data.length; i = i + 2){
+                random = Math.round(0 + Math.random() * (2-1))
+
+                if(random == 1){
+                    member_data[i].color = 'Б'
+                    member_data[i+1].color = 'Ч'
+                    color_distribution_coefficient.push('Б', 'Ч')
+                }else{
+                    member_data[i].color = 'Ч'
+                    member_data[i+1].color = 'Б'
+                    color_distribution_coefficient.push('Ч', 'Б')
+                }
+            }
+        }
+    }else{
+        if(round_current > 2){
+            for(let i = 0; i < member_data.length; i = i + 2){
+                if((member_data.length-1) != i){
+
+                    if((member_data[i].rivals[member_data[i].rivals.length - 1].color == 'Б') &&
+                    (member_data[i].rivals[member_data[i].rivals.length - 2].color == 'Б')){
+                        member_data[i].color = 'Ч'
+                        member_data[i+1].color = 'Б'
+                        color_distribution_coefficient.push('Ч', 'Б')
+                    }
+                    else if((member_data[i].rivals[member_data[i].rivals.length - 1].color == 'Ч') &&
+                    (member_data[i].rivals[member_data[i].rivals.length - 2].color == 'Ч')){
+                        member_data[i].color = 'Б'
+                        member_data[i+1].color = 'Ч'
+                        color_distribution_coefficient.push('Б', 'Ч')
+                    }
+                    else if((member_data[i+1].rivals[member_data[i+1].rivals.length - 1].color == 'Б') &&
+                    (member_data[i+1].rivals[member_data[i+1].rivals.length - 2].color == 'Б')){
+                        member_data[i].color = 'Б'
+                        member_data[i+1].color = 'Ч'
+                        color_distribution_coefficient.push('Б', 'Ч')
+                    }
+                    else if((member_data[i+1].rivals[member_data[i+1].rivals.length - 1].color == 'Ч') &&
+                    (member_data[i+1].rivals[member_data[i+1].rivals.length - 2].color == 'Ч')){
+                        member_data[i].color = 'Ч'
+                        member_data[i+1].color = 'Б'
+                        color_distribution_coefficient.push('Ч', 'Б')
+                    }else{ 
+                        let score1, score2
+
+                        for(let ii = 0; ii < member_data[i].rivals.length; ii++){
+                            if(member_data[i].rivals[ii].color == 'Б'){
+                                score1++
+                            }
+                        }
+
+                        for(let ii = 0; ii < member_data[i+1].rivals.length; ii++){
+                            if(member_data[i+1].rivals[ii].color == 'Б'){
+                                score2++
+                            }
+                        }
+
+                        if(score1 > score2){
+                            member_data[i].color = 'Ч'
+                            member_data[i+1].color = 'Б'
+                            color_distribution_coefficient.push('Ч', 'Б')
+                        }else{
+                            member_data[i].color = 'Б'
+                            member_data[i+1].color = 'Ч'
+                            color_distribution_coefficient.push('Б', 'Ч')
+                        }
+                    }
+                }
+            }
+        }else{
+            for(let i = 0; i < member_data.length - 2; i = i + 2){
+                random = Math.round(0 + Math.random() * (2-1))
+
+                if(random == 1){
+                    member_data[i].color = 'Б'
+                    member_data[i+1].color = 'Ч'
+                    color_distribution_coefficient.push('Б', 'Ч')
+                }else{
+                    member_data[i].color = 'Ч'
+                    member_data[i+1].color = 'Б'
+                    color_distribution_coefficient.push('Ч', 'Б')
+                }
+            }
+        }
+    }
+}
+
+
+
+function active_buttons(){
+    if(member_data.length % 2 == 0){
+        for(let i = 0; i < member_data.length; i = i + 2){
+            if((document.querySelector(`#mainSwiss_board_btn_victory${i}`)) != null){
+                let btn_win1 = document.querySelector(`#mainSwiss_board_btn_victory${i}`)
+                let btn_win2 = document.querySelector(`#mainSwiss_board_btn_victory${i+1}`)
+                let btn_draw = document.querySelector(`#mainSwiss_board_btn_draw${i}`)
+
+                btn_win1.addEventListener('click', function(){
+                    btn_win1.classList.add('active')
+                    btn_win2.classList.remove('active')
+                    btn_draw.classList.remove('active')
+                })
+                btn_win2.addEventListener('click', function(){
+                    btn_win1.classList.remove('active')
+                    btn_win2.classList.add('active')
+                    btn_draw.classList.remove('active')
+                })
+                btn_draw.addEventListener('click', function(){
+                    btn_win2.classList.remove('active')
+                    btn_win1.classList.remove('active')
+                    btn_draw.classList.add('active')
+                })
+            }
+        }
+    }else{
+        for(let i = 0; i < member_data.length - 1; i = i + 2){
+            if((document.querySelector(`#mainSwiss_board_btn_victory${i}`)) != null){
+                let btn_win1 = document.querySelector(`#mainSwiss_board_btn_victory${i}`)
+                let btn_win2 = document.querySelector(`#mainSwiss_board_btn_victory${i+1}`)
+                let btn_draw = document.querySelector(`#mainSwiss_board_btn_draw${i}`)
+                
+
+                btn_win1.addEventListener('click', function(){
+                    btn_win1.classList.add('active')
+                    btn_win2.classList.remove('active')
+                    btn_draw.classList.remove('active')
+
+                })
+                btn_win2.addEventListener('click', function(){
+                    btn_win1.classList.remove('active')
+                    btn_win2.classList.add('active')
+                    btn_draw.classList.remove('active')
+                })
+                btn_draw.addEventListener('click', function(){
+                    btn_win2.classList.remove('active')
+                    btn_win1.classList.remove('active')
+                    btn_draw.classList.add('active')
+                })
+            }
+        }
+    }
+}
