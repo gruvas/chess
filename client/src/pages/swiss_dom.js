@@ -14,13 +14,18 @@ function main_swiss(){
     document.location.href = "/main_swiss"
 }
 
-let maximum_number_tours = 2
+let maximum_number_tours = 5
+let maximum_number_member = 7
 
 function field_validation(){
     let game_type = localStorage.getItem('gameType') || 'Один на один'
 
+    // const warning = document.querySelector('.warning_number_tours')
     const warning = document.querySelector('.warning_number_tours')
-    const maximum_number_tours_p = document.querySelector('.maximum_number_tours')
+    const warning_text = document.querySelector('.warning_number_tours_text')
+    let prepared_text = 'Допустимое количество туров '
+    // const maximum_number_tours_p = document.querySelector('.maximum_number_tours')
+    // const maximum_number_member_p = document.querySelector('.maximum_number_member')
 
     const btn_next = document.querySelector('.basic_information_proceed')
 
@@ -29,17 +34,97 @@ function field_validation(){
         const tours = document.querySelector('.basic_information_numberTours_input').value
         const players = document.querySelector('#basic_information_participants_amount').value
         
-        if(tours > players - 1 || tours < 1){
-            maximum_number_tours = players - 1
-
-            maximum_number_tours_p.textContent = Math.ceil(maximum_number_tours)
+        if((players == 7 || players == 8) && tours != 5){
+            // maximum_number_tours_p.textContent = ' 5 '
+            // maximum_number_member_p.textContent = '7 до 8'
+            warning_text.textContent = prepared_text + '5 для игроков в количестве от 7 до 8'
 
             warning.classList.remove('hide')
 
             btn_next.disabled = true
             
             return false
-        }else{
+        }else if((players > 8 && players < 17) && (tours != 6 && tours != 7)){
+            // maximum_number_tours_p.textContent = ' от 6 до 7 '
+            // maximum_number_member_p.textContent = '9 до 16'
+            warning_text.textContent = prepared_text + 'от 6 до 7 для игроков в количестве от 9 до 16'
+
+            warning.classList.remove('hide')
+
+            btn_next.disabled = true
+            
+            return false
+        }else if((players > 16 && players < 33) && (tours < 7 || tours > 9)){
+            // maximum_number_tours_p.textContent = ' от 7 до 9 '
+            // maximum_number_member_p.textContent = '17 до 32'
+            warning_text.textContent = prepared_text + 'от 7 до 9 для игроков в количестве от 17 до 32'
+
+            warning.classList.remove('hide')
+
+            btn_next.disabled = true
+            
+            return false
+        }else if((players > 32 && players < 65) && (tours < 8 || tours > 16)){
+            // maximum_number_tours_p.textContent = ' от 8 до 16 '
+            // maximum_number_member_p.textContent = '33 до 64'
+            warning_text.textContent = prepared_text + 'от 8 до 16 для игроков в количестве от 33 до 64'
+
+            warning.classList.remove('hide')
+
+            btn_next.disabled = true
+            
+            return false
+        // }else if((players > 64 && players < 129) && (tours < 8 || tours > 16)){
+        //     // maximum_number_tours_p.textContent = ' от 8 до 16 '
+        //     // maximum_number_member_p.textContent = '65 до 129'
+        //     warning_text.textContent = prepared_text + 'от 8 до 16 для игроков в количестве от 65 до 128'
+
+        //     warning.classList.remove('hide')
+
+        //     btn_next.disabled = true
+            
+        //     return false
+        }else if((players > 64 && players < 513) && (tours < 8 || tours > 16)){
+            // maximum_number_tours_p.textContent = ' от 8 до 16 '
+            // maximum_number_member_p.textContent = '128 до 257'
+            warning_text.textContent = prepared_text + 'от 8 до 16 для игроков в количестве от 64 до 512'
+            warning.classList.remove('hide')
+
+            btn_next.disabled = true
+            
+            return false
+        }else if(players > 512 || tours > 16){
+            // maximum_number_tours_p.textContent = ' от 8 до 16 '
+            // maximum_number_member_p.textContent = '128 до 257'
+
+            warning_text.textContent = 'Максимальное количество туров 16. максимальное число игроков 512. '
+
+            warning.classList.remove('hide')
+
+            btn_next.disabled = true
+            
+            return false
+        }else if(players < 7){
+            warning_text.textContent = 'Минимальное количество игроков 7 '
+
+            warning.classList.remove('hide')
+
+            btn_next.disabled = true
+            
+            return false
+        }
+        // else if(players < 6 || players > 257){
+        //     const warning_tours_flex = document.querySelector('.warning_tours_flex')
+            
+        //     warning_tours_flex.textContent = 'Количество игроков должно находится в диапазоне между 7 и 256'
+
+        //     warning.classList.remove('hide')
+
+        //     btn_next.disabled = true
+            
+        //     return false
+        // }
+        else{
             warning.classList.add('hide')
             
             btn_next.disabled = false
@@ -53,7 +138,8 @@ function field_validation(){
         if(tours > players/2){
             maximum_number_tours = players/2
 
-            maximum_number_tours_p.textContent = Math.ceil(maximum_number_tours)
+            // maximum_number_tours_p.textContent = Math.ceil(maximum_number_tours)
+            warning_text.textContent = prepared_text + Math.ceil(maximum_number_tours)
 
             warning.classList.remove('hide')
 
@@ -451,10 +537,10 @@ export const SwissDom = () => {
                     <p>Выберите режим</p>
                 </div>
                 <div className="mode_selection_container">
-                    <div className="slide " id="slide_1">
+                    <div className="slide active" id="slide_1">
                         <h3>Один на один</h3>
                     </div>
-                    <div className="slide active" id="slide_2">
+                    <div className="slide" id="slide_2">
                         <h3>Команда на команду</h3>
                     </div>
                 </div>
@@ -479,13 +565,13 @@ export const SwissDom = () => {
                             <h1 className="basic_information_title basic_information_name_title">
                                 Название
                             </h1>
-                            <input defaultValue={'Name'} id="basic_information_tournament_name" type="text" className="basic_information_name_input input_txBox"></input>
+                            <input defaultValue={'Name'} id="basic_information_tournament_name" type="text" className="basic_information_name_input input_txBox" maxLength={320}></input>
                         </div>
                         <div className="basic_information_organization">
                             <h1 className="basic_information_title basic_information_organization_title">
                                 Организатор
                             </h1>
-                            <input defaultValue={'Org'} id="basic_information_organizer" type="text" className="basic_information_organization_input input_txBox"></input>
+                            <input defaultValue={'Org'} id="basic_information_organizer" type="text" className="basic_information_organization_input input_txBox" maxLength={320}></input>
                         </div>
 
                         <div className="basic_information_Container">
@@ -494,7 +580,7 @@ export const SwissDom = () => {
                                     Время 1 матча
                                 </h1>
                                 <div className="input_time">
-                                    <input defaultValue={15} id="basic_information_time_amount" onKeyPress={validate} type="text" placeholder="60" className="basic_information_time_inputQuantity input_txBox"></input>
+                                    <input defaultValue={15} id="basic_information_time_amount" onKeyPress={validate} type="text" placeholder="60" className="basic_information_time_inputQuantity input_txBox"  maxLength={4}></input>
                                     <ul className="dropDawn_title">
                                         <div className="dropDawn_title_displeyFlex">
                                             <p id="basic_information_time_type" className="dropDawn_title_p">Минуты</p>
@@ -518,7 +604,7 @@ export const SwissDom = () => {
                                 <h1 className="basic_information_title basic_information_numberTours_title">
                                     Количество туров
                                 </h1>
-                                <input defaultValue={2} onInput={field_validation} id="basic_information_tours_amount" onKeyPress={validate} type="text" className="basic_information_numberTours_input input_txBox"></input>
+                                <input defaultValue={5} onInput={field_validation} id="basic_information_tours_amount" onKeyPress={validate} type="text" className="basic_information_numberTours_input input_txBox" maxLength={2}></input>
                             </div>
 
                             <div className="horizontal_line"></div>
@@ -527,7 +613,7 @@ export const SwissDom = () => {
                                 <h1 id="basic_information_participants_text" className="basic_information_title basic_information_numberParticipants_title">
                                     Количество участников
                                 </h1>
-                                <input defaultValue={4} onInput={field_validation} id="basic_information_participants_amount" onKeyPress={validate} type="text" className="basic_information_numberParticipants_input input_txBox"></input>
+                                <input defaultValue={8} onInput={field_validation} id="basic_information_participants_amount" onKeyPress={validate} type="text" className="basic_information_numberParticipants_input input_txBox" maxLength={4}></input>
                             </div>
                         </div>
 
@@ -547,26 +633,58 @@ export const SwissDom = () => {
                                 </h1>
                                 <div className="inf_dataContainer">
                                     <input id="inf_dataBeginning_input" type="text" defaultValue={'15.07.2017'}
-                                    className="inf_dataBeginning_input input_txBox" placeholder="Дата начала"></input>
+                                    className="inf_dataBeginning_input input_txBox" placeholder="Дата начала" maxLength={60}></input>
 
                                     <div className="data_line"> - </div>
 
                                     <input id="inf_dataExpiration_input" type="text" defaultValue={'21.09.2021'}
-                                     className="inf_dataExpiration_input input_txBox" placeholder="Дата окончания"></input>
+                                     className="inf_dataExpiration_input input_txBox" placeholder="Дата окончания" maxLength={60}></input>
                                 </div>
                             </div>
                         </div>
 
                         <div className="warning_number_tours hide">
                             <div className="warning_number_tours_flex">
+
+                                <p className="warning_number_tours_text">
+
+                                </p>
                                 
-                                <div className="warning_tours_flex">
+                                {/* <div className="warning_tours_flex">
                                     <p>Количество туров не должно превышать&#160;</p>
 
                                     <p className="maximum_number_tours">{maximum_number_tours}</p>
                                 </div>
 
-                                &#160;и быть меньше 1
+                                &#160;и быть меньше 1 */}
+                                
+                                {/* <div className="warning_tours_flex">
+                                    <p>
+                                        Допустимое количесто туров&#160;
+                                    </p>
+
+                                    <p className="maximum_number_tours">{maximum_number_tours}</p>
+
+                                    <p>
+                                        &#160;для игроков в количестве от&#160;
+                                    </p>
+
+                                    <p className="maximum_number_member">{maximum_number_member}</p>
+                                </div> */}
+                                
+                                {/* <div className="warning_tours_flex">
+                                    <p>
+                                        Допустимое количесто туров&#160;
+                                    </p>
+
+                                    <p className="maximum_number_tours">{maximum_number_tours}</p>
+
+                                    <p>
+                                        &#160;для игроков в количестве от&#160;
+                                    </p>
+
+                                    <p className="maximum_number_member">{maximum_number_member}</p>
+                                </div> */}
                             </div>
                         </div>
 

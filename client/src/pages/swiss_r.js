@@ -52,21 +52,21 @@ export function generation_fillingParticipants() {
                             <h1 className="fillingParticipants_title">
                                 ФИО
                             </h1>
-                            <input defaultValue={'Test_fio'} id={input_fio_id} className="input_txBox input_txBox_title" type="text"></input>
+                            <input defaultValue={i+1} id={input_fio_id} className="input_txBox input_txBox_title" type="text" maxLength={3}></input>
                         </div>
 
                         <div className="fillingParticipants_age">
                             <h1 className="fillingParticipants_title">
                                 Возраст
                             </h1>
-                            <input defaultValue={16} id={input_age_id} onKeyPress = {validate} className="input_txBox input_txBox_digit" type="text"></input>
+                            <input defaultValue={16} id={input_age_id} onKeyPress = {validate} className="input_txBox input_txBox_digit" type="text" maxLength={3}></input>
                         </div>
 
                         <div className="fillingParticipants_discharge">
                             <h1 className="fillingParticipants_title">
                                 Разряд
                             </h1>
-                            <input defaultValue={'1 взрослый'} id={input_rank_id} className="input_txBox input_txBox_discharge" type="text"></input>
+                            <input defaultValue={'1 взрослый'} id={input_rank_id} className="input_txBox input_txBox_discharge" type="text" maxLength={27}></input>
                         </div>
                         <button id = {btn_id} className="fillingParticipants_btn">
                             Добавить фотографию участника
@@ -131,7 +131,7 @@ export function generation_fillingParticipants() {
                                 <h1 className="fillingParticipants_title">
                                     ФИО
                                 </h1>
-                                <input defaultValue={'Test_fio'} id={input_fio_id} className="input_txBox input_txBox_title" type="text"></input>
+                                <input defaultValue={i+1} id={input_fio_id} className="input_txBox input_txBox_title" type="text"></input>
                             </div>
 
                             <div className="fillingParticipants_age">

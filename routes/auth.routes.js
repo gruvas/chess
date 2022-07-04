@@ -247,6 +247,22 @@ router.post('/current_tour',
     }
 )
 
+router.post('/status_update',
+    async(req, res) => {
+        try{
+            console.log('Body: ', req.body)
+
+            const {id, finished_tournament} = req.body
+
+            await Tournament.updateOne({_id: id}, {finished_tournament: finished_tournament})
+
+            res.status(201).json({message: 'Tournament updated '})
+        }catch(e){
+            res.status(500).json({message: 'Что-то пошло не так, попробуйте снова'})
+        }
+    }
+)
+
 router.post('/main_characteristics',
     async(req, res) => {
         try{

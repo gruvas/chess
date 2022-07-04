@@ -44,13 +44,13 @@ export const LoginDom = () => {
                 <div className="login_input_name">
                     <p className="input_name_title login_input_name_title">Имя</p>
                     <input className="input_txBox login_input_name_textBox" type="text"
-                    id="email" name="email" onChange={changeHandler}></input>
+                    id="email" name="email" onChange={changeHandler} maxLength={32}></input>
                 </div>
                 <div className="login_input_password">
                     <p className="input_name_title login_input_password_title">Пароль</p>
                     <div className="password_bloc">
                         <input className="input_txBox login_input_password_textBox" type="password"
-                        id="password" name="password" onChange={changeHandler}></input>
+                        id="password" name="password" onChange={changeHandler} maxLength={32}></input>
                         <button className="password_bloc_btn">
                             <img className="password_bloc_img" src={eye} alt=""></img>
                         </button>

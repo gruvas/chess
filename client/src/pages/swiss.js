@@ -256,13 +256,13 @@ function Swiss(){
     
     
     
-    for(const slide of slides){
-        slide.addEventListener('click', ()=>{
-            ClearActiveClasses()
+    // for(const slide of slides){
+    //     slide.addEventListener('click', ()=>{
+    //         ClearActiveClasses()
     
-            slide.classList.add('active')
-        })
-    }
+    //         slide.classList.add('active')
+    //     })
+    // }
 }
 
 export {Swiss}

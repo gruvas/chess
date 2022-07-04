@@ -8,6 +8,8 @@ import {NavLink, useHistory} from 'react-router-dom'
 import {StartPage} from './pages/StartPage'
 
 import {MainSwiss} from './pages/main_swiss_dom'
+import {Leaderboard} from './pages/leaderboard_dom'
+import {GameHistory} from './pages/game_history'
 
 import {Swiss} from './pages/swiss'
 import {SwissDom} from './pages/swiss_dom'
@@ -41,6 +43,12 @@ export const useRoutes = isAuthenticated => {
                 </Route>
                 <Route path="/start">
                     <StartPage/>
+                </Route>
+                <Route path="/game_history">
+                    <GameHistory/>
+                </Route>
+                <Route path="/leader_board">
+                    <Leaderboard/>
                 </Route>
                 <Route path="/main_swiss">
                     <MainSwiss/>
