@@ -154,17 +154,6 @@ button:focus {
   min-height: 30px;
 }
 
-/* .fa-arrow-down{
-  width: 30px;
-  height: 30px;
-  top: 4px;
-right: -28px;
-  position: absolute;
-
-  background-image: url("./img/arrow_st.svg");
-  background-repeat: no-repeat;
-} */
-
 .container .controls .up-button {
   transform: translateY(-100%);
   border-top-right-radius: 5px;
@@ -1005,6 +994,14 @@ right: -28px;
   font-weight: 100;
 
   white-space: nowrap;
+}
+
+.completion_registration_name_text{
+  white-space: normal;
+}
+
+.completion_registration_time_text{
+  white-space: normal;
 }
 
 .completion_registration_hr{
