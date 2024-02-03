@@ -52,7 +52,7 @@ export function generation_fillingParticipants() {
                             <h1 className="fillingParticipants_title">
                                 ФИО
                             </h1>
-                            <input defaultValue={i+1} id={input_fio_id} className="input_txBox input_txBox_title" type="text" maxLength={3}></input>
+                            <input defaultValue={i+1} id={input_fio_id} className="input_txBox input_txBox_title" type="text" maxLength={100}></input>
                         </div>
 
                         <div className="fillingParticipants_age">
